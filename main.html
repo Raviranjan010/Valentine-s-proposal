@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be Mine? 💖</title>
+    <link rel="website icon" type="png" href="mochi-poke-poke-cute-cat.gif">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #422a38;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            perspective: 1000px;
+        }
+
+        .card {background: linear-gradient(45deg, #ff7998, #baa6a2);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 3rem;
+            text-align: center;
+            transform-style: preserve-3d;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: floatCard 3s ease-in-out infinite;
+        }
+
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .card:hover {
+            transform: scale(1.02) rotateX(5deg);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 20px rgba(255,105,180,0.7);
+            transform-style: preserve-3d;
+            transform: translateZ(50px);
+            animation: glowText 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowText {
+            from { text-shadow: 0 0 20px rgba(255,105,180,0.7); }
+            to { text-shadow: 0 0 30px rgba(255,105,180,1), 0 0 40px rgba(255,20,147,0.8); }
+        }
+
+        .gif-container {
+            position: relative;
+            margin: 2rem 0;
+            transform-style: preserve-3d;
+            transform: translateZ(30px);
+            transition: all 0.5s ease;
+        }
+
+        .gif-container img {
+            width: 100%;
+            max-width: 350px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s ease;
+        }
+
+        .gif-container:hover img {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(255,105,180,0.3);
+        }
+
+        .message {
+            color: #fff;
+            font-size: 1.8rem;
+            margin: 2rem 0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 1.2s ease forwards 0.5s;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2.5rem;
+            transform-style: preserve-3d;
+            transform: translateZ(40px);
+        }
+
+        .btn {
+            padding: 1.2rem 3rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-yes {
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            color: white;
+            animation: pulseYes 2s infinite;
+        }
+
+        @keyframes pulseYes {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,105,180,0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255,105,180,0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,105,180,0); }
+        }
+
+        .btn-no {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .floating-heart {
+            position: absolute;
+            color: #ff69b4;
+            font-size: 24px;
+            pointer-events: none;
+            animation: floatUp 3s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), -100vh) rotate(var(--tr));
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Will You Be Mine? 💖</h1>
+            <div class="gif-container">
+                <img src="tkthao.gif" alt="Cute Love GIF">
+            </div>
+            <p class="message">I've fallen for you... Will you be my valentine? 🌹</p>
+            <div class="buttons">
+                <a href="yes.html" class="btn btn-yes">Yes 💝</a>
+                <a href="no1.html" class="btn btn-no">No 💔</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating hearts
+        // Max number of hearts allowed at a time
+const MAX_HEARTS = 15;
+
+// Create floating hearts
+function createHeart() {
+    if (document.querySelectorAll('.floating-heart').length >= MAX_HEARTS) return;
+
+    const heart = document.createElement('div');
+    heart.className = 'floating-heart';
+    heart.innerHTML = '❤️';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.setProperty('--tx', (Math.random() * 200 - 100) + 'px');
+    heart.style.setProperty('--tr', (Math.random() * 360) + 'deg');
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 3000); // Ensure heart disappears after a fixed time
+}
+
+// Create hearts periodically (keep count in check)
+setInterval(createHeart, 300);
+
+// Mouse trail hearts (with limit)
+document.addEventListener('mousemove', (e) => {
+    if (Math.random() < 0.1) { // Reduce frequency
+        if (document.querySelectorAll('.floating-heart').length >= MAX_HEARTS) return;
+
+        const heart = document.createElement('div');
+        heart.className = 'floating-heart';
+        heart.innerHTML = '❤️';
+        heart.style.left = e.pageX + 'px';
+        heart.style.top = e.pageY + 'px';
+        heart.style.setProperty('--tx', (Math.random() * 100 - 50) + 'px');
+        heart.style.setProperty('--tr', (Math.random() * 360) + 'deg');
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 3000); // Ensure heart disappears after a fixed time
+    }
+});
+  // Add Hearts to Scene
+  function addHeart() {
+            const heartGeometry = createHeartShape();
+            const heartMaterial = new THREE.MeshStandardMaterial({
+                color: 0xff4b8b,
+                metalness: 0.3,
+                roughness: 0.6,
+            });
+            const heart = new THREE.Mesh(heartGeometry, heartMaterial);
+            
+            const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(100));
+            heart.position.set(x, y, z);
+            heart.rotation.set(
+                Math.random() * Math.PI,
+                Math.random() * Math.PI,
+                Math.random() * Math.PI
+            );
+            heart.scale.set(0.5, 0.5, 0.5);
+            scene.add(heart);
+            return heart;
+        }
+
+        // Add multiple hearts
+        const hearts = Array(50).fill().map(addHeart);
+
+        // Lighting
+        const pointLight = new THREE.PointLight(0xff4b8b, 1);
+        pointLight.position.set(5, 5, 5);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(pointLight, ambientLight);
+
+
+        // Add hover effect to the card
+        const card = document.querySelector('.card');
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 30;
+            const rotateY = -(x - centerX) / 30;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+        });
+
+        // Add button hover effects
+        const buttons = document.querySelectorAll('.btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('mouseover', () => {
+                gsap.to(btn, {
+                    scale: 1.1,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            });
+
+            btn.addEventListener('mouseleave', () => {
+                gsap.to(btn, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            });
+        });
+    </script>
+</body>
+</html>

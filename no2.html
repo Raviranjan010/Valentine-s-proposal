@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine? 💝</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #1a1a1a;
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            perspective: 2000px;
+            transform-style: preserve-3d;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90vw;
+            max-width: 500px;
+            text-align: center;
+            transform-style: preserve-3d;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            transform: translateZ(50px);
+            text-shadow: 0 0 20px rgba(255,105,180,0.7);
+        }
+
+        .gif-container {
+            margin: 2rem 0;
+            transform: translateZ(30px);
+        }
+
+        .gif-container img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .message {
+            color: #fff;
+            font-size: 1.5rem;
+            margin: 1.5rem 0;
+            transform: translateZ(40px);
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+            transform: translateZ(60px);
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-yes {
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .btn-no {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .heart-particle {
+            position: fixed;
+            pointer-events: none;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+    
+    <div class="container">
+        <div class="card">
+            <h1>Will You Be My Valentine? 💝</h1>
+            <div class="gif-container">
+                <img src="tkthao.gif" alt="Cute Valentine GIF">
+            </div>
+            <p class="message">My Heart Beats Only For You! 💓</p>
+            <div class="buttons">
+                <a href="yes.html" class="btn btn-yes">Yes! 💝</a>
+                <a href="no3.html" class="btn btn-no">No 💔</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Three.js Scene Setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({
+            canvas: document.getElementById('bg-canvas'),
+            alpha: true,
+            antialias: true
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.position.z = 30;
+
+        // Create Heart Shape
+        const heartShape = new THREE.Shape();
+        const x = 0, y = 0;
+        heartShape.moveTo(x, y);
+        heartShape.bezierCurveTo(x + 2.5, y + 2.5, x + 2.0, y + 3.0, x, y + 3.0);
+        heartShape.bezierCurveTo(x - 2.0, y + 3.0, x - 2.5, y + 2.5, x, y);
+
+        const extrudeSettings = {
+            depth: 0.5,
+            bevelEnabled: true,
+            bevelSegments: 3,
+            steps: 2,
+            bevelSize: 0.3,
+            bevelThickness: 0.3
+        };
+
+        const geometry = new THREE.ExtrudeGeometry(heartShape, extrudeSettings);
+        const material = new THREE.MeshPhongMaterial({
+            color: 0xff69b4,
+            shininess: 100,
+            specular: 0xffffff
+        });
+
+        // Create multiple hearts
+        const hearts = [];
+        for(let i = 0; i < 30; i++) {
+            const heart = new THREE.Mesh(geometry, material);
+            heart.position.set(
+                Math.random() * 40 - 20,
+                Math.random() * 40 - 20,
+                Math.random() * 30 - 15
+            );
+            heart.rotation.set(
+                Math.random() * Math.PI,
+                Math.random() * Math.PI,
+                Math.random() * Math.PI
+            );
+            heart.scale.set(0.3, 0.3, 0.3);
+            scene.add(heart);
+            hearts.push({
+                mesh: heart,
+                rotationSpeed: Math.random() * 0.02,
+                floatSpeed: Math.random() * 0.02
+            });
+        }
+
+        // Lighting
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(5, 5, 5);
+        scene.add(light);
+        scene.add(new THREE.AmbientLight(0xff69b4, 0.5));
+
+        // 3D Container Tilt Effect
+        const container = document.querySelector('.container');
+        container.addEventListener('mousemove', (e) => {
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            gsap.to('.card', {
+                duration: 0.5,
+                rotateX: ((y - centerY) / 10) * -1,
+                rotateY: (x - centerX) / 10,
+                ease: 'power2.out'
+            });
+        });
+
+        container.addEventListener('mouseleave', () => {
+            gsap.to('.card', {
+                duration: 0.5,
+                rotateX: 0,
+                rotateY: 0,
+                ease: 'power2.out'
+            });
+        });
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            hearts.forEach(heart => {
+                heart.mesh.rotation.x += heart.rotationSpeed;
+                heart.mesh.rotation.y += heart.rotationSpeed;
+                heart.mesh.position.y += Math.sin(Date.now() * heart.floatSpeed) * 0.02;
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        // Handle Window Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        animate();
+
+        // Button Hover Effects
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                gsap.to(btn, {
+                    scale: 1.1,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            });
+
+            btn.addEventListener('mouseleave', () => {
+                gsap.to(btn, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            });
+        });
+    </script>
+</body>
+</html>
