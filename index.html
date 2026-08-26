@@ -1,18 +1,434 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Love</title>
-	<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>A Midnight Note • For You</title>
+  <meta name="description" content="A nighttime, whimsical interactive proposal story.">
+
+  <!-- Google Fonts: Caveat (Display), Outfit (Body), Space Mono (Utility) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Outfit:wght@300;400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-	
-	<form id="login-form">
-		<label for="code">Enter Your Name:</label>
-		<input type="password" id="code" name="code">
-		<button id="submit-btn">Login</button>
-	</form>
-	<div id="result"></div>
 
-	<script src="script.js"></script>
+  <!-- Ambient Film Grain & Vignette Overlay -->
+  <div class="grain-overlay" aria-hidden="true"></div>
+  <div class="light-leak-overlay" id="lightLeakOverlay" aria-hidden="true"></div>
+
+  <!-- Audio Element -->
+  <audio id="bgMusic" src="assets/Audio1.mp3" loop preload="auto"></audio>
+
+  <!-- Camcorder HUD & Global Header Header -->
+  <header class="app-header">
+    <div class="camcorder-hud">
+      <span class="rec-dot"></span>
+      <span class="hud-text">REC [<span id="hudTimestamp">00:00:00</span>]</span>
+      <span class="hud-tag">HI8 • TAPE REEL</span>
+    </div>
+
+    <!-- Diegetic Fairy Light String Progress Indicator -->
+    <nav class="fairy-lights-nav" aria-label="Scene progress">
+      <div class="string-line"></div>
+      <ul class="fairy-lights-list">
+        <li class="fairy-bulb active" data-scene="1" title="Scene 1: Teaser">
+          <span class="bulb-glow"></span>
+          <span class="bulb-num">01</span>
+        </li>
+        <li class="fairy-bulb" data-scene="2" title="Scene 2: Memory Lane">
+          <span class="bulb-glow"></span>
+          <span class="bulb-num">02</span>
+        </li>
+        <li class="fairy-bulb" data-scene="3" title="Scene 3: Questions">
+          <span class="bulb-glow"></span>
+          <span class="bulb-num">03</span>
+        </li>
+        <li class="fairy-bulb" data-scene="4" title="Scene 4: Build-Up">
+          <span class="bulb-glow"></span>
+          <span class="bulb-num">04</span>
+        </li>
+        <li class="fairy-bulb" data-scene="5" title="Scene 5: The Ask">
+          <span class="bulb-glow"></span>
+          <span class="bulb-num">05</span>
+        </li>
+        <li class="fairy-bulb" data-scene="6" title="Scene 6: Celebration">
+          <span class="bulb-glow"></span>
+          <span class="bulb-num">06</span>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Global Sound Toggle -->
+    <button id="soundToggleBtn" class="sound-toggle-btn" aria-label="Toggle Background Music">
+      <span class="sound-icon">🎵</span>
+      <span class="sound-text">Sound: OFF</span>
+    </button>
+  </header>
+
+  <!-- MAIN SCENE CONTAINER -->
+  <main class="scenes-viewport" id="scenesViewport">
+
+    <!-- ==================== SCENE 1: TEASER / GATE ==================== -->
+    <section class="scene-section scene-active" id="scene-1" data-scene-id="1">
+      <div class="scene-content teaser-container">
+        <div class="ambient-candle" aria-hidden="true"></div>
+
+        <div class="envelope-wrapper">
+          <div class="envelope-tape"></div>
+          <div class="envelope-card">
+            <div class="stamp-badge">LATE NIGHT MEMORY</div>
+            <h1 class="teaser-title">For your eyes only...</h1>
+            <p class="teaser-subtitle">A quiet nighttime story captured on 8mm film.</p>
+            <div class="flicker-flame">✨</div>
+          </div>
+        </div>
+
+        <div class="gate-action">
+          <button class="primary-btn pulse-glow" id="startGateBtn">
+            <span class="btn-text">Tap to Unseal Memory Tape ✉️</span>
+          </button>
+          <p class="gate-hint">Best experienced with sound on</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SCENE 2: MEMORY LANE ==================== -->
+    <section class="scene-section" id="scene-2" data-scene-id="2">
+      <div class="scene-content memory-container">
+        <div class="scene-header">
+          <span class="section-tag font-handwritten">Chapter I</span>
+          <h2 class="scene-title">Our Favorite Frames</h2>
+          <p class="scene-subtitle">Swipe or use arrows to flip through our midnight memories</p>
+        </div>
+
+        <!-- Polaroid Carousel Wrapper -->
+        <div class="carousel-stage">
+          <button class="carousel-nav-btn prev-btn" id="carouselPrev" aria-label="Previous Photo">❮</button>
+
+          <div class="carousel-viewport" id="carouselViewport">
+            <div class="carousel-track" id="carouselTrack">
+              <!-- Memory 1 -->
+              <div class="polaroid-card active">
+                <div class="tape-strip top-left"></div>
+                <div class="polaroid-photo-wrapper">
+                  <img src="assets/image3.gif" alt="Memory 1" class="polaroid-img" loading="lazy">
+                </div>
+                <div class="polaroid-caption font-handwritten">
+                  "That late night when time just completely stopped for us."
+                </div>
+                <div class="polaroid-stamp font-mono">01 / 10</div>
+              </div>
+
+              <!-- Memory 2 -->
+              <div class="polaroid-card">
+                <div class="tape-strip top-right"></div>
+                <div class="polaroid-photo-wrapper">
+                  <img src="assets/image4.gif" alt="Memory 2" class="polaroid-img" loading="lazy">
+                </div>
+                <div class="polaroid-caption font-handwritten">
+                  "The spontaneous silly moments that always make me smile."
+                </div>
+                <div class="polaroid-stamp font-mono">02 / 10</div>
+              </div>
+
+              <!-- Memory 3 -->
+              <div class="polaroid-card">
+                <div class="tape-strip top-left"></div>
+                <div class="polaroid-photo-wrapper">
+                  <img src="assets/image5.gif" alt="Memory 3" class="polaroid-img" loading="lazy">
+                </div>
+                <div class="polaroid-caption font-handwritten">
+                  "Every cozy conversation under warm glowing lights."
+                </div>
+                <div class="polaroid-stamp font-mono">03 / 10</div>
+              </div>
+
+              <!-- Memory 4 -->
+              <div class="polaroid-card">
+                <div class="tape-strip top-right"></div>
+                <div class="polaroid-photo-wrapper">
+                  <img src="assets/image6.webp" alt="Memory 4" class="polaroid-img" loading="lazy">
+                </div>
+                <div class="polaroid-caption font-handwritten">
+                  "Stolen glances when you thought I wasn't looking."
+                </div>
+                <div class="polaroid-stamp font-mono">04 / 10</div>
+              </div>
+
+              <!-- Memory 5 -->
+              <div class="polaroid-card">
+                <div class="tape-strip top-left"></div>
+                <div class="polaroid-photo-wrapper">
+                  <img src="assets/image7.gif" alt="Memory 5" class="polaroid-img" loading="lazy">
+                </div>
+                <div class="polaroid-caption font-handwritten">
+                  "When a random walk turned into my favorite part of the week."
+                </div>
+                <div class="polaroid-stamp font-mono">05 / 10</div>
+              </div>
+
+              <!-- Memory 6 -->
+              <div class="polaroid-card">
+                <div class="tape-strip top-right"></div>
+                <div class="polaroid-photo-wrapper">
+                  <img src="assets/image8.gif" alt="Memory 6" class="polaroid-img" loading="lazy">
+                </div>
+                <div class="polaroid-caption font-handwritten">
+                  "That un-shakeable cozy comfort whenever you're around."
+                </div>
+                <div class="polaroid-stamp font-mono">06 / 10</div>
+              </div>
+
+              <!-- Memory 7 -->
+              <div class="polaroid-card">
+                <div class="tape-strip top-left"></div>
+                <div class="polaroid-photo-wrapper">
+                  <img src="assets/image9.gif" alt="Memory 7" class="polaroid-img" loading="lazy">
+                </div>
+                <div class="polaroid-caption font-handwritten">
+                  "Shared secrets and laughing until our stomachs hurt."
+                </div>
+                <div class="polaroid-stamp font-mono">07 / 10</div>
+              </div>
+
+              <!-- Memory 8 -->
+              <div class="polaroid-card">
+                <div class="tape-strip top-right"></div>
+                <div class="polaroid-photo-wrapper">
+                  <img src="assets/image10.gif" alt="Memory 8" class="polaroid-img" loading="lazy">
+                </div>
+                <div class="polaroid-caption font-handwritten">
+                  "Little inside jokes that only the two of us understand."
+                </div>
+                <div class="polaroid-stamp font-mono">08 / 10</div>
+              </div>
+
+              <!-- Memory 9 -->
+              <div class="polaroid-card">
+                <div class="tape-strip top-left"></div>
+                <div class="polaroid-photo-wrapper">
+                  <img src="assets/image11.webp" alt="Memory 9" class="polaroid-img" loading="lazy">
+                </div>
+                <div class="polaroid-caption font-handwritten">
+                  "Looking at you and knowing everything feels just right."
+                </div>
+                <div class="polaroid-stamp font-mono">09 / 10</div>
+              </div>
+
+              <!-- Memory 10 -->
+              <div class="polaroid-card">
+                <div class="tape-strip top-right"></div>
+                <div class="polaroid-photo-wrapper">
+                  <img src="assets/tkthao.gif" alt="Memory 10" class="polaroid-img" loading="lazy">
+                </div>
+                <div class="polaroid-caption font-handwritten">
+                  "And this is still just the beginning..."
+                </div>
+                <div class="polaroid-stamp font-mono">10 / 10</div>
+              </div>
+            </div>
+          </div>
+
+          <button class="carousel-nav-btn next-btn" id="carouselNext" aria-label="Next Photo">❯</button>
+        </div>
+
+        <div class="scene-footer">
+          <div class="carousel-indicators" id="carouselDots"></div>
+          <button class="secondary-btn" id="memoryLaneDoneBtn">
+            Continue Our Story 🡓
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SCENE 3: THE QUESTIONS ==================== -->
+    <section class="scene-section" id="scene-3" data-scene-id="3">
+      <div class="scene-content questions-container">
+        <div class="scene-header">
+          <span class="section-tag font-handwritten">Chapter II</span>
+          <h2 class="scene-title">A Few Quick Questions</h2>
+          <div class="question-progress font-mono" id="qProgressText">Question 1 of 4</div>
+        </div>
+
+        <!-- Question Cards Container -->
+        <div class="question-cards-wrapper">
+
+          <!-- Question 1 -->
+          <div class="question-card active" data-question-index="0">
+            <div class="tape-strip center"></div>
+            <h3 class="question-prompt font-handwritten">
+              "Out of all our late-night talks and random moments... what's your favorite kind of memory with us?"
+            </h3>
+            <div class="options-grid">
+              <button class="option-btn" data-answer="1">The 2 AM deep conversations 🌙</button>
+              <button class="option-btn" data-answer="2">The spontaneous silly adventures 🚀</button>
+              <button class="option-btn" data-answer="3">Just sitting in cozy quiet together ☕</button>
+            </div>
+          </div>
+
+          <!-- Question 2 -->
+          <div class="question-card" data-question-index="1">
+            <div class="tape-strip center"></div>
+            <h3 class="question-prompt font-handwritten">
+              "If we had an entire free evening with zero plans and all the time in the world... where are we heading?"
+            </h3>
+            <div class="options-grid">
+              <button class="option-btn" data-answer="1">Stargazing with warm drinks ✨</button>
+              <button class="option-btn" data-answer="2">Trying that food spot we bookmarked 🍜</button>
+              <button class="option-btn" data-answer="3">Wandering the city until late 🏙️</button>
+            </div>
+          </div>
+
+          <!-- Question 3 -->
+          <div class="question-card" data-question-index="2">
+            <div class="tape-strip center"></div>
+            <h3 class="question-prompt font-handwritten">
+              "Be honest: How much do you smile when my name pops up on your phone screen?"
+            </h3>
+            <div class="options-grid">
+              <button class="option-btn" data-answer="1">11 out of 10 minimum 😊</button>
+              <button class="option-btn" data-answer="2">Off the charts entirely 📈</button>
+              <button class="option-btn" data-answer="3">I try to play it cool... but 100% 🙈</button>
+            </div>
+          </div>
+
+          <!-- Question 4 -->
+          <div class="question-card" data-question-index="3">
+            <div class="tape-strip center"></div>
+            <h3 class="question-prompt font-handwritten">
+              "Are you ready for the actual question now?"
+            </h3>
+            <div class="options-grid">
+              <button class="option-btn highlight-option" data-answer="1">Show me. My heart is ready. ❤️</button>
+              <button class="option-btn highlight-option" data-answer="2">I've been waiting for this... ✨</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SCENE 4: THE BUILD-UP ==================== -->
+    <section class="scene-section" id="scene-4" data-scene-id="4">
+      <div class="scene-content buildup-container">
+        <div class="heartbeat-ring" aria-hidden="true"></div>
+
+        <div class="suspense-box">
+          <div class="suspense-hud font-mono">SIGNAL STRENGTH: 99% • FAST-FORWARDING</div>
+
+          <div class="typewriter-quote">
+            <p class="buildup-line" id="buildupLine1">Before I ask...</p>
+            <p class="buildup-line highlight-text" id="buildupLine2">take a slow breath.</p>
+            <p class="buildup-line" id="buildupLine3">Because every moment leading to this has been my favorite story.</p>
+          </div>
+
+          <div class="countdown-pulse" id="countdownBox">
+            <span class="pulse-number" id="countdownNum">3</span>
+            <span class="pulse-label font-mono">BEATS TO PROPOSAL</span>
+          </div>
+        </div>
+
+        <button class="secondary-btn skip-buildup-btn" id="skipBuildupBtn">
+          Take Me To The Question ❯❯
+        </button>
+      </div>
+    </section>
+
+    <!-- ==================== SCENE 5: THE ASK ==================== -->
+    <section class="scene-section" id="scene-5" data-scene-id="5">
+      <div class="scene-content ask-container">
+        <div class="letter-board" id="letterBoard">
+          <div class="tape-strip top-left"></div>
+          <div class="tape-strip top-right"></div>
+
+          <div class="proposal-gif-preview">
+            <img src="assets/request.gif" alt="Cute proposal ask" class="ask-cute-gif">
+          </div>
+
+          <span class="section-tag font-handwritten">The Main Question</span>
+          <h2 class="ask-heading font-handwritten">Will you go out with me?</h2>
+          <p class="ask-subtext">On a real, special date—just the two of us.</p>
+
+          <!-- Action Buttons Area -->
+          <div class="ask-buttons-stage" id="askButtonsStage">
+            <button class="yes-btn" id="yesBtn">
+              <span class="yes-glow"></span>
+              YES! Absolutely! ❤️
+            </button>
+
+            <button class="no-btn" id="noBtn">
+              No 🙈
+            </button>
+          </div>
+
+          <!-- Container for dynamic sticky notes spawned by dodging "No" -->
+          <div class="sticky-notes-container" id="stickyNotesContainer" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SCENE 6: CELEBRATION ==================== -->
+    <section class="scene-section" id="scene-6" data-scene-id="6">
+      <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
+
+      <div class="scene-content celebration-container">
+        <div class="celebration-card">
+          <div class="tape-strip top-center"></div>
+
+          <div class="celebration-badge font-mono">STATUS: CONFIRMED • IT'S A DATE!</div>
+
+          <h2 class="celebration-title font-handwritten">YAYYY! 🎉❤️</h2>
+          <p class="celebration-subtitle">I knew you'd say yes! You just made my entire world smile.</p>
+
+          <!-- Showcase GIF grid -->
+          <div class="celebration-gifs-grid">
+            <div class="gif-frame">
+              <img src="assets/proposal.gif" alt="Celebration GIF 1" class="celebration-gif">
+            </div>
+            <div class="gif-frame">
+              <img src="assets/sure.gif" alt="Celebration GIF 2" class="celebration-gif">
+            </div>
+          </div>
+
+          <!-- Date Confirmation Ticket Stub -->
+          <div class="ticket-stub font-mono">
+            <div class="ticket-header">
+              <span>SPECIAL DATE PASS</span>
+              <span>№ 001</span>
+            </div>
+            <div class="ticket-body">
+              <div class="ticket-row">
+                <span class="ticket-label">EVENT:</span>
+                <span class="ticket-val">Our Late Night Adventure</span>
+              </div>
+              <div class="ticket-row">
+                <span class="ticket-label">DRESS CODE:</span>
+                <span class="ticket-val">Cozy & Cute</span>
+              </div>
+              <div class="ticket-row">
+                <span class="ticket-label">LOCATION:</span>
+                <span class="ticket-val">Top Secret Spot 🤫</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="celebration-actions">
+            <button class="primary-btn glow-btn" id="addToCalBtn">
+              📅 Add To Calendar / Remind Me
+            </button>
+            <button class="secondary-btn" id="replayBtn">
+              Replay Memory Reel ↺
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
