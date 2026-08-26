@@ -43,6 +43,13 @@ html, body {
   user-select: none;
 }
 
+/* Accessible High Contrast Focus Outlines */
+:focus-visible {
+  outline: 2px dashed var(--accent-amber) !important;
+  outline-offset: 4px !important;
+  border-radius: 4px;
+}
+
 /* Helper Utility Classes */
 .font-handwritten {
   font-family: var(--font-display);
@@ -552,7 +559,7 @@ html, body {
 }
 
 /* ==========================================================================
-   SCENE 2: MEMORY LANE
+   SCENE 2: MEMORY LANE (WITH 8MM SPROCKET PERFORATIONS)
    ========================================================================== */
 .memory-container {
   gap: 1rem;
@@ -700,24 +707,28 @@ html, body {
   margin-top: 0.5rem;
 }
 
-.carousel-indicators {
+/* 8mm Sprocket Perforation Notches */
+.film-indicators {
   display: flex;
   gap: 8px;
+  align-items: center;
 }
 
-.carousel-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+.film-dot {
+  width: 12px;
+  height: 6px;
+  border-radius: 1px;
+  background: #1E293B;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.carousel-dot.active {
+.film-dot.active {
   background: var(--accent-amber);
-  transform: scale(1.4);
+  border-color: #FFF;
   box-shadow: 0 0 10px var(--accent-amber);
+  transform: scaleY(1.5);
 }
 
 .memory-transition-trigger {
@@ -989,26 +1000,11 @@ html, body {
 }
 
 /* ==========================================================================
-   SCENE 4: THE BUILD-UP
+   SCENE 4: THE BUILD-UP (RESTRAINED MEMORY SPOTLIGHT)
    ========================================================================== */
 .buildup-container {
   gap: 1.5rem;
   position: relative;
-}
-
-.heartbeat-ring {
-  position: absolute;
-  width: 340px;
-  height: 340px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 183, 3, 0.25);
-  pointer-events: none;
-  animation: heartPulseRing 2.2s infinite ease-out;
-}
-
-@keyframes heartPulseRing {
-  0% { transform: scale(0.6); opacity: 0.8; }
-  100% { transform: scale(1.4); opacity: 0; }
 }
 
 .suspense-box {
@@ -1251,7 +1247,7 @@ html, body {
 }
 
 /* ==========================================================================
-   SCENE 6: CELEBRATION (FINALE & EMOTIONAL PAYOFF)
+   SCENE 6: CELEBRATION (ASYMMETRIC CLIMAX LAYOUT)
    ========================================================================== */
 .confetti-canvas {
   position: absolute;
@@ -1284,7 +1280,6 @@ html, body {
   width: 100%;
 }
 
-/* Audio Status Pill Widget */
 .audio-status-pill {
   background: rgba(11, 19, 43, 0.85);
   border: 1px dashed var(--accent-amber);
@@ -1311,7 +1306,7 @@ html, body {
   text-shadow: 0 0 25px rgba(255, 183, 3, 0.6);
 }
 
-/* Emotional Climax GIFs Showcase Grid */
+/* Asymmetric Climax GIF Cards */
 .celebration-climax-grid {
   display: flex;
   gap: 16px;
@@ -1334,11 +1329,11 @@ html, body {
 }
 
 .climax-frame.frame-left {
-  transform: rotate(-3deg);
+  transform: rotate(-6deg) translateY(-8px);
 }
 
 .climax-frame.frame-right {
-  transform: rotate(4deg);
+  transform: rotate(5deg) translateY(10deg);
 }
 
 .climax-frame:hover {
@@ -1368,7 +1363,6 @@ html, body {
   line-height: 1.1;
 }
 
-/* Final Event Ticket Stub */
 .date-ticket-pass {
   background: var(--paper-light);
   color: #0F172A;
@@ -1443,14 +1437,17 @@ html, body {
 }
 
 /* ==========================================================================
-   ACCESSIBILITY & REDUCED MOTION
+   ACCESSIBILITY & PREFERS-REDUCED-MOTION
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
-  .rec-dot, .fairy-bulb.active .bulb-glow, .pulse-number, .heartbeat-ring {
+  .rec-dot, .fairy-bulb.active .bulb-glow, .pulse-number, .flashback-card {
     animation: none !important;
   }
   .scene-section, .question-card, .polaroid-card, .light-leak-overlay {
     transition: opacity 0.2s linear !important;
     transform: none !important;
+  }
+  .yes-btn.yes-super-confident {
+    animation: none !important;
   }
 }

@@ -1,6 +1,6 @@
 /**
  * LATE NIGHT TAPE REEL - ROMANTIC PROPOSAL SPA CONTROLLER
- * Full Multi-Scene Architecture & Scene 6 Finale Canvas Engine
+ * Full Critique & Polish Pass: Accessibility, Reduced Motion, Keyboard Controls & Performance Deferral
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let audioPlaying = false;
   let hudSeconds = 0;
   let hudInterval = null;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // DOM Handles
   const bgMusic = document.getElementById('bgMusic');
@@ -71,17 +72,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // SCENE NAVIGATION SYSTEM WITH LIGHT LEAK TRANSITION
+  // SCENE NAVIGATION SYSTEM WITH ACCESSIBLE KEYBOARD HANDLERS
   // ==========================================================================
   function goToScene(targetScene) {
     if (targetScene < 1 || targetScene > 6 || targetScene === currentScene) return;
 
-    // Trigger signature Light-Leak transition animation
-    lightLeakOverlay.classList.remove('active-sweep');
-    void lightLeakOverlay.offsetWidth; // Force reflow
-    lightLeakOverlay.classList.add('active-sweep');
+    if (!prefersReducedMotion) {
+      lightLeakOverlay.classList.remove('active-sweep');
+      void lightLeakOverlay.offsetWidth;
+      lightLeakOverlay.classList.add('active-sweep');
+    }
 
-    // Switch active scene class after brief burn delay
     setTimeout(() => {
       scenes.forEach(scene => {
         const sceneId = parseInt(scene.getAttribute('data-scene-id'), 10);
@@ -95,13 +96,11 @@ document.addEventListener('DOMContentLoaded', () => {
       currentScene = targetScene;
       updateFairyLights();
 
-      // Trigger scene-specific lifecycle callbacks
       if (currentScene === 4) initBuildupScene();
       if (currentScene === 6) initCelebrationScene();
-    }, 250);
+    }, prefersReducedMotion ? 50 : 250);
   }
 
-  // Fairy Light Navigation Progress Indicator
   function updateFairyLights() {
     fairyBulbs.forEach(bulb => {
       const sceneNum = parseInt(bulb.getAttribute('data-scene'), 10);
@@ -109,13 +108,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (sceneNum === currentScene) {
         bulb.classList.add('active');
+        bulb.setAttribute('aria-current', 'step');
       } else if (sceneNum < currentScene) {
         bulb.classList.add('completed');
+        bulb.removeAttribute('aria-current');
+      } else {
+        bulb.removeAttribute('aria-current');
       }
     });
   }
 
-  // Direct bulb navigation for completed scenes
   fairyBulbs.forEach(bulb => {
     bulb.addEventListener('click', () => {
       const sceneNum = parseInt(bulb.getAttribute('data-scene'), 10);
@@ -123,10 +125,20 @@ document.addEventListener('DOMContentLoaded', () => {
         goToScene(sceneNum);
       }
     });
+
+    bulb.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const sceneNum = parseInt(bulb.getAttribute('data-scene'), 10);
+        if (sceneNum <= currentScene || bulb.classList.contains('completed')) {
+          goToScene(sceneNum);
+        }
+      }
+    });
   });
 
   // ==========================================================================
-  // SCENE 1: TEASER / GATE (WAX SEAL & CASCADING LIGHTS)
+  // SCENE 1: TEASER / GATE
   // ==========================================================================
   const waxSeal = document.getElementById('waxSeal');
   const letterRevealContent = document.getElementById('letterRevealContent');
@@ -152,7 +164,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (waxSeal) {
     waxSeal.addEventListener('click', openWaxSeal);
     waxSeal.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') openWaxSeal();
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openWaxSeal();
+      }
     });
   }
 
@@ -161,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // SCENE 2: MEMORY LANE (PHYSICS POLAROID SWIPE ENGINE)
+  // SCENE 2: MEMORY LANE (SPROCKET DOTS & KEYBOARD NAV)
   // ==========================================================================
   let currentPolaroidIndex = 0;
   const polaroids = document.querySelectorAll('.polaroid-card');
@@ -174,13 +189,23 @@ document.addEventListener('DOMContentLoaded', () => {
     carouselDotsContainer.innerHTML = '';
     polaroids.forEach((_, idx) => {
       const dot = document.createElement('div');
-      dot.className = `carousel-dot ${idx === 0 ? 'active' : ''}`;
+      dot.className = `film-dot ${idx === 0 ? 'active' : ''}`;
+      dot.setAttribute('role', 'tab');
+      dot.setAttribute('tabindex', '0');
+      dot.setAttribute('aria-label', `Memory card ${idx + 1} of ${polaroids.length}`);
+      
       dot.addEventListener('click', () => setPolaroidIndex(idx));
+      dot.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          setPolaroidIndex(idx);
+        }
+      });
       carouselDotsContainer.appendChild(dot);
     });
   }
 
-  const carouselDots = document.querySelectorAll('.carousel-dot');
+  const carouselDots = document.querySelectorAll('.film-dot');
 
   function setPolaroidIndex(index) {
     if (index < 0) index = 0;
@@ -207,6 +232,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (currentPolaroidIndex === polaroids.length - 1 && toQuestionsBtn) {
       toQuestionsBtn.classList.add('show-trigger');
     }
+  }
+
+  if (carouselStage) {
+    carouselStage.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        setPolaroidIndex(currentPolaroidIndex + 1);
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        setPolaroidIndex(currentPolaroidIndex - 1);
+      }
+    });
   }
 
   let isDragging = false;
@@ -255,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // SCENE 3: THE QUESTIONS & MEMORY NOTEBOOK VAULT
+  // SCENE 3: THE QUESTIONS & MEMORY VAULT
   // ==========================================================================
   let currentQuestionIndex = 0;
   let savedAnswersCount = 0;
@@ -342,6 +379,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (gaugeHeartHandle) gaugeHeartHandle.style.left = `${handleLeft}%`;
     if (gaugeArcFill) gaugeArcFill.style.width = `${gaugeValue * 100}%`;
 
+    if (heartGaugeStage) {
+      heartGaugeStage.setAttribute('aria-valuenow', Math.round(gaugeValue * 100));
+    }
+
     if (gaugeStatusText) {
       if (gaugeValue < 0.25) {
         gaugeStatusText.textContent = "Rating: Meh 🥱";
@@ -353,6 +394,18 @@ document.addEventListener('DOMContentLoaded', () => {
         gaugeStatusText.textContent = "Rating: 100% Unbearable! 🥺❤️";
       }
     }
+  }
+
+  if (heartGaugeStage) {
+    heartGaugeStage.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        updateHeartGauge(gaugeValue + 0.1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        updateHeartGauge(gaugeValue - 0.1);
+      }
+    });
   }
 
   let isGaugeDragging = false;
@@ -407,7 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // SCENE 4: THE BUILD-UP (FLASHBACK BEAT & AUTOMATED TRANSITION ENGINE)
+  // SCENE 4: THE BUILD-UP
   // ==========================================================================
   let buildupSequenceTimer = null;
 
@@ -437,7 +490,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // SCENE 5: THE ASK (ENHANCED DODGING "NO" ENGINE & CONFIDENT YES)
+  // SCENE 5: THE ASK
   // ==========================================================================
   const yesBtn = document.getElementById('yesBtn');
   const noBtn = document.getElementById('noBtn');
@@ -463,6 +516,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function dodgeNoButton(e) {
     if (e) e.preventDefault();
+
+    if (prefersReducedMotion) {
+      surrenderNoButton();
+      return;
+    }
 
     dodgeCount++;
 
@@ -556,7 +614,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // SCENE 6: CELEBRATION (THEMED PARTICLE ENGINE & EMOTIONAL CLIMAX)
+  // SCENE 6: CELEBRATION (PARTICLE ENGINE & AUDIOPLAY)
   // ==========================================================================
   const confettiCanvas = document.getElementById('confettiCanvas');
   const ctx = confettiCanvas ? confettiCanvas.getContext('2d') : null;
@@ -573,14 +631,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function initCelebrationScene() {
     toggleAudio(true);
-    createThemedParticles();
-    animateThemedParticles();
+    if (!prefersReducedMotion) {
+      createThemedParticles();
+      animateThemedParticles();
+    }
   }
 
   function createThemedParticles() {
     confettiParticles = [];
     const colors = ['#FFB703', '#F4A261', '#10B981', '#E0E1DD', '#F43F5E'];
-    const particleCount = 80;
+    const particleCount = 70;
 
     for (let i = 0; i < particleCount; i++) {
       confettiParticles.push({
@@ -598,7 +658,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function animateThemedParticles() {
-    if (!ctx || !confettiCanvas) return;
+    if (!ctx || !confettiCanvas || currentScene !== 6) return;
     ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
 
     confettiParticles.forEach(p => {
