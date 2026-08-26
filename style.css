@@ -707,7 +707,6 @@ html, body {
   margin-top: 0.5rem;
 }
 
-/* 8mm Sprocket Perforation Notches */
 .film-indicators {
   display: flex;
   gap: 8px;
@@ -803,7 +802,7 @@ html, body {
   position: relative;
   width: 100%;
   max-width: 480px;
-  min-height: 350px;
+  min-height: 360px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1000,7 +999,7 @@ html, body {
 }
 
 /* ==========================================================================
-   SCENE 4: THE BUILD-UP (RESTRAINED MEMORY SPOTLIGHT)
+   SCENE 4: THE BUILD-UP
    ========================================================================== */
 .buildup-container {
   gap: 1.5rem;
@@ -1108,7 +1107,7 @@ html, body {
 }
 
 /* ==========================================================================
-   SCENE 5: THE ASK
+   SCENE 5: THE ASK (LAYOUT OVERFLOW FIX & STUBBORN CHEEKY BUTTONS)
    ========================================================================== */
 .ask-container {
   width: 100%;
@@ -1158,32 +1157,41 @@ html, body {
 .ask-buttons-stage {
   position: relative;
   width: 100%;
-  min-height: 120px;
+  min-height: 140px;
   margin-top: 1rem;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 16px;
+  overflow: visible;
+  z-index: 10;
 }
 
+/* Confident YES Button - Strictly Constrained Bounds */
 .yes-btn {
   background: linear-gradient(135deg, #10B981 0%, #059669 100%);
   color: #FFF;
   border: 2px solid #34D399;
-  padding: 16px 36px;
+  padding: 16px 28px;
   border-radius: 35px;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 1.2rem;
+  font-size: clamp(1.1rem, 3.8vw, 1.5rem);
   cursor: pointer;
   box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
-  transition: all 0.35s var(--transition-smooth);
+  transition: transform 0.35s var(--transition-smooth), box-shadow 0.35s ease;
   z-index: 10;
   position: relative;
+  max-width: 90%;
+  width: auto;
+  text-align: center;
+  word-break: break-word;
+  transform-origin: center center;
 }
 
 .yes-btn:hover {
-  transform: scale(1.06);
+  transform: scale(1.04);
   box-shadow: 0 15px 35px rgba(16, 185, 129, 0.7);
 }
 
@@ -1193,22 +1201,25 @@ html, body {
 
 @keyframes yesConfidentPulse {
   0%, 100% { box-shadow: 0 0 25px rgba(16, 185, 129, 0.6); }
-  50% { box-shadow: 0 0 50px rgba(16, 185, 129, 0.95), 0 0 70px rgba(255, 183, 3, 0.5); }
+  50% { box-shadow: 0 0 45px rgba(16, 185, 129, 0.95), 0 0 60px rgba(255, 183, 3, 0.5); }
 }
 
+/* Stubborn Dodging NO Button */
 .no-btn {
   background: #EF4444;
   color: #FFF;
   border: 1px solid #F87171;
-  padding: 14px 28px;
-  border-radius: 30px;
+  padding: 10px 20px;
+  border-radius: 25px;
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: left 0.25s var(--transition-smooth), top 0.25s var(--transition-smooth), transform 0.3s ease, opacity 0.3s ease;
-  z-index: 20;
+  transition: left 0.22s var(--transition-smooth), top 0.22s var(--transition-smooth), transform 0.25s ease, opacity 0.3s ease;
+  z-index: 25;
   position: absolute;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+  white-space: nowrap;
 }
 
 .no-btn.no-surrendered {
@@ -1222,9 +1233,13 @@ html, body {
 
 .sticky-notes-container {
   position: absolute;
-  inset: 0;
+  top: -20px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   pointer-events: none;
-  z-index: 30;
+  z-index: 35;
+  overflow: visible;
 }
 
 .sticky-note {
@@ -1239,6 +1254,8 @@ html, body {
   transform: rotate(-4deg);
   animation: stickyPop 0.4s var(--transition-smooth) forwards;
   pointer-events: none;
+  max-width: 220px;
+  line-height: 1.2;
 }
 
 @keyframes stickyPop {

@@ -309,7 +309,7 @@
       </div>
     </section>
 
-    <!-- ==================== SCENE 3: THE QUESTIONS ==================== -->
+    <!-- ==================== SCENE 3: THE QUESTIONS (6 EXPANDED ROMANTIC QUESTIONS) ==================== -->
     <section class="scene-section" id="scene-3" data-scene-id="3">
       <div class="scene-content questions-container">
         
@@ -321,41 +321,44 @@
 
           <div class="memory-notebook-widget" tabindex="0" title="Your saved answers" aria-label="Memory notebook answer vault">
             <span class="notebook-icon">📓</span>
-            <span class="notebook-count font-mono" id="savedCountText">Saved: 0/4</span>
+            <span class="notebook-count font-mono" id="savedCountText">Saved: 0/6</span>
           </div>
         </div>
 
-        <div class="question-progress font-mono" id="qProgressText" aria-live="polite">Question 1 of 4</div>
+        <div class="question-progress font-mono" id="qProgressText" aria-live="polite">Question 1 of 6</div>
 
         <div class="question-cards-wrapper">
 
+          <!-- Question 1 -->
           <div class="question-card active" data-question-index="0">
             <div class="tape-strip center"></div>
             <h3 class="question-prompt font-handwritten">
-              "First time we met — do you remember what you were wearing?"
+              "First time we met — do you remember what caught your eye first?"
             </h3>
             
             <div class="input-answer-group">
-              <input type="text" id="q1Input" class="handwritten-input" placeholder="Type your memory here..." autocomplete="off" aria-label="Your memory of what was worn">
+              <input type="text" id="q1Input" class="handwritten-input" placeholder="Your first impression memory..." autocomplete="off" aria-label="First impression memory">
               <button class="save-answer-btn font-handwritten" id="q1SubmitBtn" aria-label="Save answer for question 1">
-                save to notebook ➔
+                save memory ➔
               </button>
             </div>
           </div>
 
+          <!-- Question 2 -->
           <div class="question-card" data-question-index="1">
             <div class="tape-strip center"></div>
             <h3 class="question-prompt font-handwritten">
-              "Which of these describes our worst/best date so far?"
+              "Which of these describes our absolute best date so far?"
             </h3>
             
             <div class="options-grid">
-              <button class="option-btn" data-q2-option="1">That spontaneous late-night food run</button>
-              <button class="option-btn" data-q2-option="2">Getting completely lost under the night sky</button>
-              <button class="option-btn" data-q2-option="3">Every single date... even when plans went wrong</button>
+              <button class="option-btn" data-q2-option="1">That spontaneous late-night food & boba run 🍜🧋</button>
+              <button class="option-btn" data-q2-option="2">Getting lost chatting under the night sky ✨</button>
+              <button class="option-btn" data-q2-option="3">Every single date... even when plans went wrong 🙈</button>
             </div>
           </div>
 
+          <!-- Question 3 -->
           <div class="question-card" data-question-index="2">
             <div class="tape-strip center"></div>
             <h3 class="question-prompt font-handwritten">
@@ -379,17 +382,47 @@
             </div>
           </div>
 
+          <!-- Question 4 (NEW ROMANTIC QUESTION) -->
           <div class="question-card" data-question-index="3">
             <div class="tape-strip center"></div>
             <h3 class="question-prompt font-handwritten">
-              "If we could teleport anywhere right now, where would it be?"
+              "What is one secret late-night habit or inside joke of ours that always makes you smile?"
             </h3>
             
             <div class="input-answer-group">
-              <input type="text" id="q4Input" class="handwritten-input" placeholder="Our dream spot..." autocomplete="off" aria-label="Your dream teleport destination">
-              <button class="save-answer-btn font-handwritten" id="q4SubmitBtn" aria-label="Lock in answer for question 4">
-                lock in answer ✨
+              <input type="text" id="q4Input" class="handwritten-input" placeholder="Our little secret..." autocomplete="off" aria-label="Secret inside joke">
+              <button class="save-answer-btn font-handwritten" id="q4SubmitBtn" aria-label="Lock in secret question 4">
+                save secret ➔
               </button>
+            </div>
+          </div>
+
+          <!-- Question 5 (NEW TELEPORT DESTINATION) -->
+          <div class="question-card" data-question-index="4">
+            <div class="tape-strip center"></div>
+            <h3 class="question-prompt font-handwritten">
+              "If we could teleport anywhere right now for a romantic getaway, where would it be?"
+            </h3>
+            
+            <div class="input-answer-group">
+              <input type="text" id="q5Input" class="handwritten-input" placeholder="Our dream getaway spot..." autocomplete="off" aria-label="Dream getaway spot">
+              <button class="save-answer-btn font-handwritten" id="q5SubmitBtn" aria-label="Save destination question 5">
+                save dream spot ➔
+              </button>
+            </div>
+          </div>
+
+          <!-- Question 6 (NEW NAUGHTY LOVE TEMP GAUGE) -->
+          <div class="question-card" data-question-index="5">
+            <div class="tape-strip center"></div>
+            <h3 class="question-prompt font-handwritten">
+              "How ready are your butterfly feelings for the final proposal surprise?"
+            </h3>
+            
+            <div class="options-grid">
+              <button class="option-btn" data-q6-option="1">My heart is racing so fast! 💓🔥</button>
+              <button class="option-btn" data-q6-option="2">1000% Ready... don't keep me waiting! 🙈✨</button>
+              <button class="option-btn" data-q6-option="3">Show me already, secret lover! 🤭💋</button>
             </div>
           </div>
 
@@ -427,7 +460,7 @@
       </div>
     </section>
 
-    <!-- ==================== SCENE 5: THE ASK ==================== -->
+    <!-- ==================== SCENE 5: THE ASK (STUBBORN & NAUGHTY NO BUTTON) ==================== -->
     <section class="scene-section" id="scene-5" data-scene-id="5">
       <div class="scene-content ask-container">
         <div class="letter-board" id="letterBoard">

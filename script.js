@@ -1,6 +1,6 @@
 /**
  * LATE NIGHT TAPE REEL - ROMANTIC PROPOSAL SPA CONTROLLER
- * Full Critique & Polish Pass: Accessibility, Reduced Motion, Keyboard Controls & Performance Deferral
+ * 6 Expanded Romantic Questions & Stubborn Naughty "No" Dodge Architecture
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -292,18 +292,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // SCENE 3: THE QUESTIONS & MEMORY VAULT
+  // SCENE 3: THE QUESTIONS (6 SEQUENTIAL ROMANTIC QUESTIONS)
   // ==========================================================================
   let currentQuestionIndex = 0;
   let savedAnswersCount = 0;
   const questionCards = document.querySelectorAll('.question-card');
+  const totalQuestions = questionCards.length;
   const qProgressText = document.getElementById('qProgressText');
   const savedCountText = document.getElementById('savedCountText');
   const memoryNotebookWidget = document.querySelector('.memory-notebook-widget');
 
   function saveAnswerToVault() {
     savedAnswersCount++;
-    savedCountText.textContent = `Saved: ${savedAnswersCount}/4`;
+    if (savedCountText) savedCountText.textContent = `Saved: ${savedAnswersCount}/${totalQuestions}`;
 
     if (memoryNotebookWidget) {
       memoryNotebookWidget.classList.remove('vault-saved');
@@ -315,7 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function advanceQuestionCard() {
     saveAnswerToVault();
 
-    if (currentQuestionIndex < questionCards.length - 1) {
+    if (currentQuestionIndex < totalQuestions - 1) {
       const activeCard = questionCards[currentQuestionIndex];
       activeCard.classList.add('exiting');
       activeCard.classList.remove('active');
@@ -324,7 +325,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const nextCard = questionCards[currentQuestionIndex];
       nextCard.classList.add('active');
 
-      qProgressText.textContent = `Question ${currentQuestionIndex + 1} of ${questionCards.length}`;
+      if (qProgressText) {
+        qProgressText.textContent = `Question ${currentQuestionIndex + 1} of ${totalQuestions}`;
+      }
     } else {
       setTimeout(() => {
         goToScene(4);
@@ -332,9 +335,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Q1 Text Input
   const q1Input = document.getElementById('q1Input');
   const q1SubmitBtn = document.getElementById('q1SubmitBtn');
-
   function submitQ1() {
     const val = q1Input ? q1Input.value.trim() : '';
     if (!val) {
@@ -344,7 +347,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     advanceQuestionCard();
   }
-
   if (q1SubmitBtn) q1SubmitBtn.addEventListener('click', submitQ1);
   if (q1Input) {
     q1Input.addEventListener('keydown', (e) => {
@@ -352,24 +354,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Q2 Multiple Choice
   const q2Options = document.querySelectorAll('[data-q2-option]');
   q2Options.forEach(btn => {
     btn.addEventListener('click', () => {
       q2Options.forEach(o => o.classList.remove('selected-answer'));
       btn.classList.add('selected-answer');
-
-      setTimeout(() => {
-        advanceQuestionCard();
-      }, 400);
+      setTimeout(() => advanceQuestionCard(), 350);
     });
   });
 
+  // Q3 Heart Gauge Slider
   const heartGaugeStage = document.getElementById('heartGaugeStage');
   const gaugeHeartHandle = document.getElementById('gaugeHeartHandle');
   const gaugeArcFill = document.getElementById('gaugeArcFill');
   const gaugeStatusText = document.getElementById('gaugeStatusText');
   const q3SubmitBtn = document.getElementById('q3SubmitBtn');
-
   let gaugeValue = 0.85;
 
   function updateHeartGauge(percent) {
@@ -378,10 +378,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (gaugeHeartHandle) gaugeHeartHandle.style.left = `${handleLeft}%`;
     if (gaugeArcFill) gaugeArcFill.style.width = `${gaugeValue * 100}%`;
-
-    if (heartGaugeStage) {
-      heartGaugeStage.setAttribute('aria-valuenow', Math.round(gaugeValue * 100));
-    }
+    if (heartGaugeStage) heartGaugeStage.setAttribute('aria-valuenow', Math.round(gaugeValue * 100));
 
     if (gaugeStatusText) {
       if (gaugeValue < 0.25) {
@@ -406,20 +403,15 @@ document.addEventListener('DOMContentLoaded', () => {
         updateHeartGauge(gaugeValue - 0.1);
       }
     });
-  }
 
-  let isGaugeDragging = false;
-
-  if (heartGaugeStage) {
+    let isGaugeDragging = false;
     heartGaugeStage.addEventListener('pointerdown', (e) => {
       isGaugeDragging = true;
       handleGaugeMove(e);
     });
-
     window.addEventListener('pointermove', (e) => {
       if (isGaugeDragging) handleGaugeMove(e);
     });
-
     window.addEventListener('pointerup', () => {
       isGaugeDragging = false;
     });
@@ -434,30 +426,56 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (q3SubmitBtn) {
-    q3SubmitBtn.addEventListener('click', () => {
-      advanceQuestionCard();
-    });
+    q3SubmitBtn.addEventListener('click', () => advanceQuestionCard());
   }
 
+  // Q4 Secret Late-Night Joke Input
   const q4Input = document.getElementById('q4Input');
   const q4SubmitBtn = document.getElementById('q4SubmitBtn');
-
   function submitQ4() {
     const val = q4Input ? q4Input.value.trim() : '';
     if (!val) {
       q4Input.focus();
-      q4Input.placeholder = "Type your dream spot... ✨";
+      q4Input.placeholder = "Type your secret memory... ✨";
       return;
     }
     advanceQuestionCard();
   }
-
   if (q4SubmitBtn) q4SubmitBtn.addEventListener('click', submitQ4);
   if (q4Input) {
     q4Input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') submitQ4();
     });
   }
+
+  // Q5 Teleport Getaway Spot Input
+  const q5Input = document.getElementById('q5Input');
+  const q5SubmitBtn = document.getElementById('q5SubmitBtn');
+  function submitQ5() {
+    const val = q5Input ? q5Input.value.trim() : '';
+    if (!val) {
+      q5Input.focus();
+      q5Input.placeholder = "Type your dream spot... ✨";
+      return;
+    }
+    advanceQuestionCard();
+  }
+  if (q5SubmitBtn) q5SubmitBtn.addEventListener('click', submitQ5);
+  if (q5Input) {
+    q5Input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') submitQ5();
+    });
+  }
+
+  // Q6 Butterfly Readiness Options
+  const q6Options = document.querySelectorAll('[data-q6-option]');
+  q6Options.forEach(btn => {
+    btn.addEventListener('click', () => {
+      q6Options.forEach(o => o.classList.remove('selected-answer'));
+      btn.classList.add('selected-answer');
+      setTimeout(() => advanceQuestionCard(), 400);
+    });
+  });
 
   // ==========================================================================
   // SCENE 4: THE BUILD-UP
@@ -490,7 +508,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // SCENE 5: THE ASK
+  // SCENE 5: THE ASK (STUBBORN NAUGHTY NO ENGINE & CONSTRAINED YES SCALING)
   // ==========================================================================
   const yesBtn = document.getElementById('yesBtn');
   const noBtn = document.getElementById('noBtn');
@@ -499,19 +517,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let dodgeCount = 0;
   const maxDodges = 6;
-  let yesScale = 1;
 
+  // Cheeky/naughty NO button labels per dodge
+  const noButtonLabels = [
+    "No 🙈",
+    "Nice try! 😜",
+    "Too slow! 💨",
+    "Harder! 😏",
+    "Can't touch this! 💃",
+    "You secret lover! 🤭",
+    "Surrendered! 🏳️❤️"
+  ];
+
+  // Handwritten voice reaction notes
   const stickyMessages = [
-    "Wait, misclick? Let me help you out... 🙈",
-    "Are you sure? Think about our late-night boba runs! 🧋",
+    "Wait, misclick or just playing hard to get? 😏",
+    "You can't resist late-night boba & midnight cuddles! 🧋",
     "Nice try! But destiny has already written this frame. ✨",
-    "Look how warm and glowing that YES button is getting! ❤️",
-    "The 'No' button is getting dizzy... try the green one! 💫",
-    "Error 404: 'No' option not found in our memory tape. 📼",
-    "Even the camera is rooting for YES! 🎥",
-    "Alright, I'll make the YES button impossible to miss! 😊",
-    "You know you want to say yes... just tap it! 💖",
-    "Resistance is futile! Our date awaits! 🎟️"
+    "Look how glowing and irresistible that YES button is! 💋",
+    "The 'No' button is getting dizzy & blushing... try the green one! 🙈",
+    "Naughty naughty! You know you want to say YES! 🔥",
+    "Even the camera is rooting for us! 🎥",
+    "Surrender already, your heart has spoken! 💖"
   ];
 
   function dodgeNoButton(e) {
@@ -532,8 +559,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const stageRect = askButtonsStage.getBoundingClientRect();
     const noRect = noBtn.getBoundingClientRect();
 
-    const maxX = Math.max(20, stageRect.width - noRect.width - 20);
-    const maxY = Math.max(20, stageRect.height - noRect.height - 20);
+    const maxX = Math.max(10, stageRect.width - noRect.width - 10);
+    const maxY = Math.max(10, stageRect.height - noRect.height - 10);
 
     const pattern = dodgeCount % 5;
     let newX = 0;
@@ -543,28 +570,30 @@ document.addEventListener('DOMContentLoaded', () => {
       newX = Math.floor(Math.random() * maxX);
       newY = Math.floor(Math.random() * maxY);
     } else if (pattern === 1) {
-      newX = Math.floor(maxX * 0.85);
+      newX = Math.floor(maxX * 0.82);
       newY = Math.floor(maxY * 0.15);
       noBtn.style.transform = 'scale(1.15) rotate(15deg)';
-      setTimeout(() => { noBtn.style.transform = 'scale(1) rotate(0deg)'; }, 200);
+      setTimeout(() => { if (noBtn) noBtn.style.transform = 'scale(1) rotate(0deg)'; }, 200);
     } else if (pattern === 2) {
-      newX = Math.floor(maxX * 0.9);
-      newY = -30;
+      newX = Math.floor(maxX * 0.88);
+      newY = -25;
     } else if (pattern === 3) {
-      newX = 15;
-      newY = 15;
+      newX = 10;
+      newY = 10;
     } else {
       newX = Math.floor(maxX * 0.5);
-      newY = Math.floor(maxY * 0.9);
-      noBtn.style.transform = 'scale(0.8) rotate(-10deg)';
-      setTimeout(() => { noBtn.style.transform = 'scale(1) rotate(0deg)'; }, 200);
+      newY = Math.floor(maxY * 0.85);
+      noBtn.style.transform = 'scale(0.85) rotate(-10deg)';
+      setTimeout(() => { if (noBtn) noBtn.style.transform = 'scale(1) rotate(0deg)'; }, 200);
     }
 
     noBtn.style.left = `${newX}px`;
     noBtn.style.top = `${newY}px`;
+    noBtn.textContent = noButtonLabels[dodgeCount % noButtonLabels.length];
 
-    yesScale += 0.14;
-    yesBtn.style.transform = `scale(${yesScale})`;
+    // Confident YES expansion - Strictly capped scale to prevent overflow
+    const cappedScale = Math.min(1.32, 1 + dodgeCount * 0.05);
+    yesBtn.style.transform = `scale(${cappedScale})`;
     yesBtn.classList.add('yes-super-confident');
 
     spawnStickyNote(stickyMessages[(dodgeCount - 1) % stickyMessages.length]);
@@ -573,10 +602,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function surrenderNoButton() {
     if (!noBtn) return;
     noBtn.classList.add('no-surrendered');
-    noBtn.textContent = "Surrendered! 🏳️";
+    noBtn.textContent = "Surrendered! 🏳️❤️";
     spawnStickyNote("The 'No' button has officially retired! Only YES remains. ❤️");
 
-    yesBtn.style.transform = `scale(${yesScale + 0.2})`;
+    if (yesBtn) {
+      yesBtn.style.transform = 'scale(1.35)';
+    }
   }
 
   function spawnStickyNote(msg) {
@@ -586,9 +617,9 @@ document.addEventListener('DOMContentLoaded', () => {
     note.className = 'sticky-note';
     note.textContent = msg;
 
-    const rot = Math.floor(Math.random() * 20) - 10;
-    const topPos = Math.floor(Math.random() * 50) + 10;
-    const leftPos = Math.floor(Math.random() * 60) + 20;
+    const rot = Math.floor(Math.random() * 16) - 8;
+    const topPos = Math.floor(Math.random() * 45) + 5;
+    const leftPos = Math.floor(Math.random() * 55) + 15;
 
     note.style.top = `${topPos}%`;
     note.style.left = `${leftPos}%`;
@@ -596,7 +627,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     stickyNotesContainer.appendChild(note);
 
-    if (stickyNotesContainer.children.length > 4) {
+    if (stickyNotesContainer.children.length > 3) {
       stickyNotesContainer.removeChild(stickyNotesContainer.firstChild);
     }
   }
@@ -706,9 +737,8 @@ document.addEventListener('DOMContentLoaded', () => {
       currentQuestionIndex = 0;
       savedAnswersCount = 0;
       dodgeCount = 0;
-      yesScale = 1;
 
-      if (savedCountText) savedCountText.textContent = 'Saved: 0/4';
+      if (savedCountText) savedCountText.textContent = `Saved: 0/${totalQuestions}`;
       if (yesBtn) {
         yesBtn.style.transform = 'scale(1)';
         yesBtn.classList.remove('yes-super-confident');
