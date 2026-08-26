@@ -15,14 +15,14 @@
 </head>
 <body>
 
-  <!-- Ambient Film Grain & Vignette Overlay -->
+  <!-- Ambient Film Grain Overlay -->
   <div class="grain-overlay" aria-hidden="true"></div>
   <div class="light-leak-overlay" id="lightLeakOverlay" aria-hidden="true"></div>
 
   <!-- Audio Element -->
   <audio id="bgMusic" src="assets/Audio1.mp3" loop preload="auto"></audio>
 
-  <!-- Camcorder HUD & Global Header Header -->
+  <!-- Camcorder HUD & Global Header -->
   <header class="app-header">
     <div class="camcorder-hud">
       <span class="rec-dot"></span>
@@ -33,7 +33,7 @@
     <!-- Diegetic Fairy Light String Progress Indicator -->
     <nav class="fairy-lights-nav" aria-label="Scene progress">
       <div class="string-line"></div>
-      <ul class="fairy-lights-list">
+      <ul class="fairy-lights-list" id="fairyLightsList">
         <li class="fairy-bulb active" data-scene="1" title="Scene 1: Teaser">
           <span class="bulb-glow"></span>
           <span class="bulb-num">01</span>
@@ -74,24 +74,64 @@
     <!-- ==================== SCENE 1: TEASER / GATE ==================== -->
     <section class="scene-section scene-active" id="scene-1" data-scene-id="1">
       <div class="scene-content teaser-container">
-        <div class="ambient-candle" aria-hidden="true"></div>
+        
+        <!-- Cascading Ambient String Lights Background -->
+        <div class="ambient-string-lights" aria-hidden="true">
+          <div class="hanging-wire"></div>
+          <div class="bulb-node bulb-1"></div>
+          <div class="bulb-node bulb-2"></div>
+          <div class="bulb-node bulb-3"></div>
+          <div class="bulb-node bulb-4"></div>
+          <div class="bulb-node bulb-5"></div>
+        </div>
 
-        <div class="envelope-wrapper">
-          <div class="envelope-tape"></div>
-          <div class="envelope-card">
-            <div class="stamp-badge">LATE NIGHT MEMORY</div>
-            <h1 class="teaser-title">For your eyes only...</h1>
-            <p class="teaser-subtitle">A quiet nighttime story captured on 8mm film.</p>
-            <div class="flicker-flame">✨</div>
+        <!-- The Atmospheric Sealed Envelope Card -->
+        <div class="envelope-card-wrapper" id="envelopeWrapper">
+          
+          <!-- Tape Strips on Desk -->
+          <div class="tape-strip top-left"></div>
+          <div class="tape-strip top-right"></div>
+
+          <!-- Main Envelope Body -->
+          <div class="envelope-body" id="envelopeBody">
+            <div class="envelope-stamp font-mono">02:00 AM • PRIVATE REEL</div>
+            
+            <h1 class="teaser-heading font-handwritten">For your eyes only...</h1>
+            <p class="teaser-subtext">A quiet nighttime story captured on 8mm film.</p>
+
+            <!-- Wax Seal Component -->
+            <div class="wax-seal-wrapper" id="waxSeal" role="button" tabindex="0" aria-label="Crack open wax seal">
+              <div class="wax-seal-outer">
+                <span class="wax-stamp-symbol">✦</span>
+                <span class="wax-stamp-text font-mono">TAP SEAL</span>
+              </div>
+              <div class="wax-crack-particle p1"></div>
+              <div class="wax-crack-particle p2"></div>
+              <div class="wax-crack-particle p3"></div>
+            </div>
+
+            <!-- Letter Inside (Revealed when Wax Seal Cracks) -->
+            <div class="letter-reveal-content" id="letterRevealContent">
+              <p class="handwritten-note font-handwritten">
+                "I put together something small for you... a memory tape of our favorite late-night moments."
+              </p>
+              
+              <!-- Understated Diegetic Call to Action -->
+              <button class="diegetic-continue-link font-handwritten" id="turnPageBtn">
+                turn the page ➔
+              </button>
+            </div>
+
+            <!-- Cute Companion Peek (Mochi Cat) -->
+            <div class="companion-cat-peek" title="Curious companion peeking in!">
+              <img src="assets/mochi-poke-poke-cute-cat.gif" alt="Cute companion cat peeking" class="cat-gif">
+            </div>
+
           </div>
         </div>
 
-        <div class="gate-action">
-          <button class="primary-btn pulse-glow" id="startGateBtn">
-            <span class="btn-text">Tap to Unseal Memory Tape ✉️</span>
-          </button>
-          <p class="gate-hint">Best experienced with sound on</p>
-        </div>
+        <!-- Footnote hint -->
+        <p class="gate-hint font-mono" id="gateHintText">Tap the wax seal to unseal your letter</p>
       </div>
     </section>
 
@@ -104,7 +144,7 @@
           <p class="scene-subtitle">Swipe or use arrows to flip through our midnight memories</p>
         </div>
 
-        <!-- Polaroid Carousel Wrapper -->
+        <!-- Polaroid Carousel Stage -->
         <div class="carousel-stage">
           <button class="carousel-nav-btn prev-btn" id="carouselPrev" aria-label="Previous Photo">❮</button>
 
@@ -253,9 +293,7 @@
           <div class="question-progress font-mono" id="qProgressText">Question 1 of 4</div>
         </div>
 
-        <!-- Question Cards Container -->
         <div class="question-cards-wrapper">
-
           <!-- Question 1 -->
           <div class="question-card active" data-question-index="0">
             <div class="tape-strip center"></div>
@@ -306,7 +344,6 @@
               <button class="option-btn highlight-option" data-answer="2">I've been waiting for this... ✨</button>
             </div>
           </div>
-
         </div>
       </div>
     </section>

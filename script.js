@@ -1,6 +1,6 @@
 /**
  * LATE NIGHT TAPE REEL - ROMANTIC PROPOSAL SPA CONTROLLER
- * Architecture: Modular ES6 Single Page App Engine
+ * Scene 1 Isolation & Multi-Scene Engine
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (hudInterval) clearInterval(hudInterval);
     hudInterval = setInterval(() => {
       hudSeconds++;
-      const hrs = String(Math.floor(hudSeconds / 3600)).padStart(2, '0');
       const mins = String(Math.floor((hudSeconds % 3600) / 60)).padStart(2, '0');
       const secs = String(hudSeconds % 60).padStart(2, '0');
       hudTimestamp.textContent = `${mins}:${secs}`;
@@ -47,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         soundToggleBtn.classList.add('playing');
         soundToggleBtn.querySelector('.sound-text').textContent = 'Sound: ON';
       }).catch(err => {
-        console.log('Audio autoplay prevented:', err);
+        console.log('Audio playback waiting for interaction:', err);
       });
     } else {
       bgMusic.pause();
@@ -115,11 +114,42 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==========================================================================
-  // SCENE 1: TEASER / GATE
+  // SCENE 1: TEASER / GATE (WAX SEAL & CASCADING LIGHTS)
   // ==========================================================================
-  const startGateBtn = document.getElementById('startGateBtn');
-  startGateBtn.addEventListener('click', () => {
+  const waxSeal = document.getElementById('waxSeal');
+  const letterRevealContent = document.getElementById('letterRevealContent');
+  const ambientLights = document.querySelector('.ambient-string-lights');
+  const gateHintText = document.getElementById('gateHintText');
+  const turnPageBtn = document.getElementById('turnPageBtn');
+
+  function openWaxSeal() {
+    // 1. Play ambient music / unlock browser audio context
     toggleAudio(true);
+
+    // 2. Trigger wax seal crack animation
+    waxSeal.classList.add('cracked');
+
+    // 3. Trigger cascading string lights animation
+    if (ambientLights) {
+      ambientLights.classList.add('cascade-active');
+    }
+
+    // 4. Reveal handwritten letter content
+    setTimeout(() => {
+      waxSeal.style.display = 'none';
+      letterRevealContent.classList.add('revealed');
+      gateHintText.textContent = "Letter unsealed! Click 'turn the page ➔' to begin your memory tape.";
+    }, 450);
+  }
+
+  waxSeal.addEventListener('click', openWaxSeal);
+  waxSeal.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      openWaxSeal();
+    }
+  });
+
+  turnPageBtn.addEventListener('click', () => {
     goToScene(2);
   });
 
@@ -160,23 +190,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  carouselPrev.addEventListener('click', () => updateCarousel(currentPolaroidIndex - 1));
-  carouselNext.addEventListener('click', () => updateCarousel(currentPolaroidIndex + 1));
-  memoryLaneDoneBtn.addEventListener('click', () => goToScene(3));
+  if (carouselPrev) carouselPrev.addEventListener('click', () => updateCarousel(currentPolaroidIndex - 1));
+  if (carouselNext) carouselNext.addEventListener('click', () => updateCarousel(currentPolaroidIndex + 1));
+  if (memoryLaneDoneBtn) memoryLaneDoneBtn.addEventListener('click', () => goToScene(3));
 
   // Touch Swipe Support for Memory Lane
   let touchStartX = 0;
   let touchEndX = 0;
   const carouselViewport = document.getElementById('carouselViewport');
 
-  carouselViewport.addEventListener('touchstart', e => {
-    touchStartX = e.changedTouches[0].screenX;
-  }, { passive: true });
+  if (carouselViewport) {
+    carouselViewport.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
 
-  carouselViewport.addEventListener('touchend', e => {
-    touchEndX = e.changedTouches[0].screenX;
-    handleSwipe();
-  }, { passive: true });
+    carouselViewport.addEventListener('touchend', e => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
+  }
 
   function handleSwipe() {
     const swipeThreshold = 40;
@@ -207,11 +239,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const options = card.querySelectorAll('.option-btn');
     options.forEach(btn => {
       btn.addEventListener('click', () => {
-        // Visual selection indicator
         options.forEach(o => o.classList.remove('selected-answer'));
         btn.classList.add('selected-answer');
 
-        // Transition to next question
         setTimeout(() => {
           advanceQuestion();
         }, 400);
@@ -231,7 +261,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       qProgressText.textContent = `Question ${currentQuestionIndex + 1} of ${questionCards.length}`;
     } else {
-      // Questions finished -> Proceed to Scene 4 (Build-Up)
       goToScene(4);
     }
   }
@@ -272,10 +301,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1200);
   }
 
-  skipBuildupBtn.addEventListener('click', () => {
-    if (buildupTimer) clearInterval(buildupTimer);
-    goToScene(5);
-  });
+  if (skipBuildupBtn) {
+    skipBuildupBtn.addEventListener('click', () => {
+      if (buildupTimer) clearInterval(buildupTimer);
+      goToScene(5);
+    });
+  }
 
   // ==========================================================================
   // SCENE 5: THE ASK & PLAYFUL DODGING "NO" BUTTON
@@ -305,7 +336,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const stageRect = askButtonsStage.getBoundingClientRect();
     const noRect = noBtn.getBoundingClientRect();
 
-    // Calculate safe random coordinates within stage
     const maxX = stageRect.width - noRect.width;
     const maxY = stageRect.height - noRect.height;
 
@@ -315,12 +345,10 @@ document.addEventListener('DOMContentLoaded', () => {
     noBtn.style.left = `${randomX}px`;
     noBtn.style.top = `${randomY}px`;
 
-    // Scale up YES button!
     yesScale += 0.12;
     yesBtn.style.transform = `scale(${yesScale})`;
     yesBtn.style.boxShadow = `0 ${10 * yesScale}px ${25 * yesScale}px rgba(16, 185, 129, 0.6)`;
 
-    // Spawn cute sticky note teaser
     spawnStickyNote(stickyMessages[dodgeCount % stickyMessages.length]);
   }
 
@@ -329,7 +357,6 @@ document.addEventListener('DOMContentLoaded', () => {
     note.className = 'sticky-note';
     note.textContent = msg;
 
-    // Random placement near the top/sides of board
     const rot = Math.floor(Math.random() * 20) - 10;
     const topPos = Math.floor(Math.random() * 60) + 10;
     const leftPos = Math.floor(Math.random() * 70) + 15;
@@ -340,21 +367,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     stickyNotesContainer.appendChild(note);
 
-    // Limit maximum sticky notes on screen
     if (stickyNotesContainer.children.length > 5) {
       stickyNotesContainer.removeChild(stickyNotesContainer.firstChild);
     }
   }
 
-  // Hover and Touch Listeners for No Button Dodge
-  noBtn.addEventListener('mouseenter', dodgeNoButton);
-  noBtn.addEventListener('touchstart', dodgeNoButton, { passive: false });
-  noBtn.addEventListener('click', dodgeNoButton);
+  if (noBtn) {
+    noBtn.addEventListener('mouseenter', dodgeNoButton);
+    noBtn.addEventListener('touchstart', dodgeNoButton, { passive: false });
+    noBtn.addEventListener('click', dodgeNoButton);
+  }
 
-  // YES Button Action -> Go to Celebration
-  yesBtn.addEventListener('click', () => {
-    goToScene(6);
-  });
+  if (yesBtn) {
+    yesBtn.addEventListener('click', () => {
+      goToScene(6);
+    });
+  }
 
   // ==========================================================================
   // SCENE 6: CELEBRATION & CONFETTI CANVAS ENGINE
@@ -416,7 +444,6 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.fillStyle = p.color;
 
       if (p.isHeart) {
-        // Draw small heart
         ctx.beginPath();
         ctx.arc(-p.size / 2, 0, p.size / 2, 0, Math.PI, true);
         ctx.arc(p.size / 2, 0, p.size / 2, 0, Math.PI, true);
@@ -424,7 +451,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.closePath();
         ctx.fill();
       } else {
-        // Draw standard rectangular confetti
         ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 1.5);
       }
 
@@ -436,23 +462,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Celebration Action Buttons
   const addToCalBtn = document.getElementById('addToCalBtn');
   const replayBtn = document.getElementById('replayBtn');
 
-  addToCalBtn.addEventListener('click', () => {
-    alert("✨ Date ticket saved! Check your calendar for our special night out! ❤️");
-  });
+  if (addToCalBtn) {
+    addToCalBtn.addEventListener('click', () => {
+      alert("✨ Date ticket saved! Check your calendar for our special night out! ❤️");
+    });
+  }
 
-  replayBtn.addEventListener('click', () => {
-    // Reset state and replay
-    if (confettiAnimId) cancelAnimationFrame(confettiAnimId);
-    currentQuestionIndex = 0;
-    yesScale = 1;
-    yesBtn.style.transform = 'scale(1)';
-    noBtn.style.left = 'auto';
-    noBtn.style.top = 'auto';
-    stickyNotesContainer.innerHTML = '';
-    goToScene(1);
-  });
+  if (replayBtn) {
+    replayBtn.addEventListener('click', () => {
+      if (confettiAnimId) cancelAnimationFrame(confettiAnimId);
+      currentQuestionIndex = 0;
+      yesScale = 1;
+      if (yesBtn) yesBtn.style.transform = 'scale(1)';
+      if (noBtn) {
+        noBtn.style.left = 'auto';
+        noBtn.style.top = 'auto';
+      }
+      if (stickyNotesContainer) stickyNotesContainer.innerHTML = '';
+      goToScene(1);
+    });
+  }
 });
