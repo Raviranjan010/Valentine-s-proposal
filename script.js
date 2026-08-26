@@ -1,6 +1,6 @@
 /**
  * LATE NIGHT TAPE REEL - ROMANTIC PROPOSAL SPA CONTROLLER
- * 6 Expanded Romantic Questions & Stubborn Naughty "No" Dodge Architecture
+ * 6 Expanded Romantic Questions & Robust Failsafe Navigation Handlers
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -39,32 +39,41 @@ document.addEventListener('DOMContentLoaded', () => {
   // AUDIO CONTROLLER WITH BROWSER AUTOPLAY FALLBACK
   // ==========================================================================
   function toggleAudio(forcePlay = null) {
+    if (!bgMusic) return;
     const shouldPlay = forcePlay !== null ? forcePlay : bgMusic.paused;
     const celebrationAudioText = document.getElementById('celebrationAudioText');
 
     if (shouldPlay) {
       bgMusic.play().then(() => {
         audioPlaying = true;
-        soundToggleBtn.classList.add('playing');
-        soundToggleBtn.querySelector('.sound-text').textContent = 'Sound: ON';
+        if (soundToggleBtn) {
+          soundToggleBtn.classList.add('playing');
+          soundToggleBtn.querySelector('.sound-text').textContent = 'Sound: ON';
+        }
         if (celebrationAudioText) celebrationAudioText.textContent = "Music Playing... 🎵";
       }).catch(err => {
         console.log('Audio autoplay policy fallback active:', err);
         audioPlaying = false;
-        soundToggleBtn.classList.remove('playing');
-        soundToggleBtn.querySelector('.sound-text').textContent = 'Sound: OFF';
+        if (soundToggleBtn) {
+          soundToggleBtn.classList.remove('playing');
+          soundToggleBtn.querySelector('.sound-text').textContent = 'Sound: OFF';
+        }
         if (celebrationAudioText) celebrationAudioText.textContent = "🔇 Tap for Sound";
       });
     } else {
       bgMusic.pause();
       audioPlaying = false;
-      soundToggleBtn.classList.remove('playing');
-      soundToggleBtn.querySelector('.sound-text').textContent = 'Sound: OFF';
+      if (soundToggleBtn) {
+        soundToggleBtn.classList.remove('playing');
+        soundToggleBtn.querySelector('.sound-text').textContent = 'Sound: OFF';
+      }
       if (celebrationAudioText) celebrationAudioText.textContent = "🔇 Tap for Sound";
     }
   }
 
-  soundToggleBtn.addEventListener('click', () => toggleAudio());
+  if (soundToggleBtn) {
+    soundToggleBtn.addEventListener('click', () => toggleAudio());
+  }
 
   const celebrationAudioControl = document.getElementById('celebrationAudioControl');
   if (celebrationAudioControl) {
@@ -77,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function goToScene(targetScene) {
     if (targetScene < 1 || targetScene > 6 || targetScene === currentScene) return;
 
-    if (!prefersReducedMotion) {
+    if (!prefersReducedMotion && lightLeakOverlay) {
       lightLeakOverlay.classList.remove('active-sweep');
       void lightLeakOverlay.offsetWidth;
       lightLeakOverlay.classList.add('active-sweep');
@@ -138,41 +147,82 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==========================================================================
-  // SCENE 1: TEASER / GATE
+  // SCENE 1: TEASER / GATE (FAILSAFE WAX SEAL & TURN PAGE BUTTON ENGINE)
   // ==========================================================================
   const waxSeal = document.getElementById('waxSeal');
+  const envelopeBody = document.getElementById('envelopeBody');
   const letterRevealContent = document.getElementById('letterRevealContent');
   const ambientLights = document.querySelector('.ambient-string-lights');
   const gateHintText = document.getElementById('gateHintText');
   const turnPageBtn = document.getElementById('turnPageBtn');
+  let isSealUnsealed = false;
 
-  function openWaxSeal() {
-    toggleAudio(true);
-    waxSeal.classList.add('cracked');
+  function openWaxSeal(e) {
+    if (e && e.target && e.target.closest('#turnPageBtn')) return;
+    if (isSealUnsealed) return;
+    isSealUnsealed = true;
+
+    try {
+      toggleAudio(true);
+    } catch (err) {
+      console.log('Audio autoplay init caught:', err);
+    }
+
+    if (waxSeal) {
+      waxSeal.classList.add('cracked');
+    }
 
     if (ambientLights) {
       ambientLights.classList.add('cascade-active');
     }
 
     setTimeout(() => {
-      waxSeal.style.display = 'none';
-      letterRevealContent.classList.add('revealed');
-      gateHintText.textContent = "Letter unsealed! Click 'turn the page ➔' to begin your memory tape.";
-    }, 450);
+      if (waxSeal) waxSeal.style.display = 'none';
+      if (letterRevealContent) letterRevealContent.classList.add('revealed');
+      if (gateHintText) gateHintText.textContent = "Letter unsealed! Click 'turn the page ➔' to begin your memory tape.";
+    }, 350);
   }
 
   if (waxSeal) {
     waxSeal.addEventListener('click', openWaxSeal);
+    waxSeal.addEventListener('pointerdown', openWaxSeal);
+    waxSeal.addEventListener('touchstart', openWaxSeal, { passive: true });
     waxSeal.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        openWaxSeal();
+        openWaxSeal(e);
+      }
+    });
+  }
+
+  if (envelopeBody) {
+    envelopeBody.addEventListener('click', (e) => {
+      if (!isSealUnsealed && !e.target.closest('#turnPageBtn')) {
+        openWaxSeal(e);
       }
     });
   }
 
   if (turnPageBtn) {
-    turnPageBtn.addEventListener('click', () => goToScene(2));
+    turnPageBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      goToScene(2);
+    });
+    turnPageBtn.addEventListener('pointerdown', (e) => {
+      e.stopPropagation();
+      goToScene(2);
+    });
+    turnPageBtn.addEventListener('touchstart', (e) => {
+      e.stopPropagation();
+      goToScene(2);
+    }, { passive: true });
+    turnPageBtn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        e.stopPropagation();
+        goToScene(2);
+      }
+    });
   }
 
   // ==========================================================================
@@ -212,8 +262,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (index >= polaroids.length) index = polaroids.length - 1;
 
     currentPolaroidIndex = index;
-    carouselTrack.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
-    carouselTrack.style.transform = `translateX(-${currentPolaroidIndex * 100}%)`;
+    if (carouselTrack) {
+      carouselTrack.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
+      carouselTrack.style.transform = `translateX(-${currentPolaroidIndex * 100}%)`;
+    }
 
     polaroids.forEach((card, idx) => {
       card.classList.toggle('active', idx === currentPolaroidIndex);
@@ -255,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
       isDragging = true;
       startX = e.clientX;
       dragDeltaX = 0;
-      carouselTrack.style.transition = 'none';
+      if (carouselTrack) carouselTrack.style.transition = 'none';
     });
 
     window.addEventListener('pointermove', (e) => {
@@ -263,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
       dragDeltaX = e.clientX - startX;
 
       const baseOffset = -currentPolaroidIndex * carouselStage.offsetWidth;
-      carouselTrack.style.transform = `translateX(${baseOffset + dragDeltaX}px)`;
+      if (carouselTrack) carouselTrack.style.transform = `translateX(${baseOffset + dragDeltaX}px)`;
 
       const activeCard = polaroids[currentPolaroidIndex];
       if (activeCard) {
@@ -288,7 +340,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (toQuestionsBtn) {
-    toQuestionsBtn.addEventListener('click', () => goToScene(3));
+    toQuestionsBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      goToScene(3);
+    });
+    toQuestionsBtn.addEventListener('pointerdown', (e) => {
+      e.stopPropagation();
+      goToScene(3);
+    });
   }
 
   // ==========================================================================
@@ -318,12 +377,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (currentQuestionIndex < totalQuestions - 1) {
       const activeCard = questionCards[currentQuestionIndex];
-      activeCard.classList.add('exiting');
-      activeCard.classList.remove('active');
+      if (activeCard) {
+        activeCard.classList.add('exiting');
+        activeCard.classList.remove('active');
+      }
 
       currentQuestionIndex++;
       const nextCard = questionCards[currentQuestionIndex];
-      nextCard.classList.add('active');
+      if (nextCard) nextCard.classList.add('active');
 
       if (qProgressText) {
         qProgressText.textContent = `Question ${currentQuestionIndex + 1} of ${totalQuestions}`;
@@ -429,7 +490,7 @@ document.addEventListener('DOMContentLoaded', () => {
     q3SubmitBtn.addEventListener('click', () => advanceQuestionCard());
   }
 
-  // Q4 Secret Late-Night Joke Input
+  // Q4 Secret Joke Input
   const q4Input = document.getElementById('q4Input');
   const q4SubmitBtn = document.getElementById('q4SubmitBtn');
   function submitQ4() {
@@ -448,7 +509,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Q5 Teleport Getaway Spot Input
+  // Q5 Teleport Destination Input
   const q5Input = document.getElementById('q5Input');
   const q5SubmitBtn = document.getElementById('q5SubmitBtn');
   function submitQ5() {
@@ -518,7 +579,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let dodgeCount = 0;
   const maxDodges = 6;
 
-  // Cheeky/naughty NO button labels per dodge
   const noButtonLabels = [
     "No 🙈",
     "Nice try! 😜",
@@ -529,7 +589,6 @@ document.addEventListener('DOMContentLoaded', () => {
     "Surrendered! 🏳️❤️"
   ];
 
-  // Handwritten voice reaction notes
   const stickyMessages = [
     "Wait, misclick or just playing hard to get? 😏",
     "You can't resist late-night boba & midnight cuddles! 🧋",
@@ -591,7 +650,6 @@ document.addEventListener('DOMContentLoaded', () => {
     noBtn.style.top = `${newY}px`;
     noBtn.textContent = noButtonLabels[dodgeCount % noButtonLabels.length];
 
-    // Confident YES expansion - Strictly capped scale to prevent overflow
     const cappedScale = Math.min(1.32, 1 + dodgeCount * 0.05);
     yesBtn.style.transform = `scale(${cappedScale})`;
     yesBtn.classList.add('yes-super-confident');
@@ -737,6 +795,7 @@ document.addEventListener('DOMContentLoaded', () => {
       currentQuestionIndex = 0;
       savedAnswersCount = 0;
       dodgeCount = 0;
+      isSealUnsealed = false;
 
       if (savedCountText) savedCountText.textContent = `Saved: 0/${totalQuestions}`;
       if (yesBtn) {
@@ -748,6 +807,13 @@ document.addEventListener('DOMContentLoaded', () => {
         noBtn.textContent = "No 🙈";
         noBtn.style.left = 'auto';
         noBtn.style.top = 'auto';
+      }
+      if (waxSeal) {
+        waxSeal.style.display = 'flex';
+        waxSeal.classList.remove('cracked');
+      }
+      if (letterRevealContent) {
+        letterRevealContent.classList.remove('revealed');
       }
       if (stickyNotesContainer) stickyNotesContainer.innerHTML = '';
       goToScene(1);

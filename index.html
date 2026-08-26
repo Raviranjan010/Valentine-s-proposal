@@ -96,7 +96,7 @@
             <h1 class="teaser-heading font-handwritten">For your eyes only...</h1>
             <p class="teaser-subtext">A quiet nighttime story captured on 8mm film.</p>
 
-            <!-- Wax Seal Component with Failsafe Trigger -->
+            <!-- Wax Seal Component -->
             <div class="wax-seal-wrapper" id="waxSeal" role="button" tabindex="0" aria-label="Crack open wax seal to unseal letter">
               <div class="wax-seal-outer">
                 <span class="wax-stamp-symbol">✦</span>
@@ -113,7 +113,7 @@
                 "I put together something small for you... a memory tape of our favorite late-night moments."
               </p>
               
-              <button class="diegetic-continue-link font-handwritten" id="turnPageBtn" aria-label="Turn the page to memory lane">
+              <button class="diegetic-continue-link font-handwritten" id="turnPageBtn" type="button" aria-label="Turn the page to memory lane">
                 turn the page ➔
               </button>
             </div>
@@ -302,7 +302,7 @@
           <!-- Sprocket perforation film dots -->
           <div class="film-indicators" id="carouselDots" role="tablist" aria-label="Photo carousel pagination"></div>
           
-          <button class="diegetic-continue-link font-handwritten memory-transition-trigger" id="toQuestionsBtn" aria-label="Proceed to the questions scene">
+          <button class="diegetic-continue-link font-handwritten memory-transition-trigger" id="toQuestionsBtn" type="button" aria-label="Proceed to the questions scene">
             ready for a few questions? ➔
           </button>
         </div>
@@ -338,7 +338,7 @@
             
             <div class="input-answer-group">
               <input type="text" id="q1Input" class="handwritten-input" placeholder="Your first impression memory..." autocomplete="off" aria-label="First impression memory">
-              <button class="save-answer-btn font-handwritten" id="q1SubmitBtn" aria-label="Save answer for question 1">
+              <button class="save-answer-btn font-handwritten" id="q1SubmitBtn" type="button" aria-label="Save answer for question 1">
                 save memory ➔
               </button>
             </div>
@@ -352,9 +352,9 @@
             </h3>
             
             <div class="options-grid">
-              <button class="option-btn" data-q2-option="1">That spontaneous late-night food & boba run 🍜🧋</button>
-              <button class="option-btn" data-q2-option="2">Getting lost chatting under the night sky ✨</button>
-              <button class="option-btn" data-q2-option="3">Every single date... even when plans went wrong 🙈</button>
+              <button class="option-btn" data-q2-option="1" type="button">That spontaneous late-night food & boba run 🍜🧋</button>
+              <button class="option-btn" data-q2-option="2" type="button">Getting lost chatting under the night sky ✨</button>
+              <button class="option-btn" data-q2-option="3" type="button">Every single date... even when plans went wrong 🙈</button>
             </div>
           </div>
 
@@ -376,7 +376,7 @@
                 Rating: 100% Unbearable! 🥺❤️
               </div>
               
-              <button class="save-answer-btn font-handwritten" id="q3SubmitBtn" aria-label="Save missing rating for question 3">
+              <button class="save-answer-btn font-handwritten" id="q3SubmitBtn" type="button" aria-label="Save missing rating for question 3">
                 save rating ➔
               </button>
             </div>
@@ -391,7 +391,7 @@
             
             <div class="input-answer-group">
               <input type="text" id="q4Input" class="handwritten-input" placeholder="Our little secret..." autocomplete="off" aria-label="Secret inside joke">
-              <button class="save-answer-btn font-handwritten" id="q4SubmitBtn" aria-label="Lock in secret question 4">
+              <button class="save-answer-btn font-handwritten" id="q4SubmitBtn" type="button" aria-label="Lock in secret question 4">
                 save secret ➔
               </button>
             </div>
@@ -406,7 +406,7 @@
             
             <div class="input-answer-group">
               <input type="text" id="q5Input" class="handwritten-input" placeholder="Our dream getaway spot..." autocomplete="off" aria-label="Dream getaway spot">
-              <button class="save-answer-btn font-handwritten" id="q5SubmitBtn" aria-label="Save destination question 5">
+              <button class="save-answer-btn font-handwritten" id="q5SubmitBtn" type="button" aria-label="Save destination question 5">
                 save dream spot ➔
               </button>
             </div>
@@ -420,9 +420,9 @@
             </h3>
             
             <div class="options-grid">
-              <button class="option-btn" data-q6-option="1">My heart is racing so fast! 💓🔥</button>
-              <button class="option-btn" data-q6-option="2">1000% Ready... don't keep me waiting! 🙈✨</button>
-              <button class="option-btn" data-q6-option="3">Show me already, secret lover! 🤭💋</button>
+              <button class="option-btn" data-q6-option="1" type="button">My heart is racing so fast! 💓🔥</button>
+              <button class="option-btn" data-q6-option="2" type="button">1000% Ready... don't keep me waiting! 🙈✨</button>
+              <button class="option-btn" data-q6-option="3" type="button">Show me already, secret lover! 🤭💋</button>
             </div>
           </div>
 
@@ -476,12 +476,12 @@
           <p class="ask-subtext">On a real, special date—just the two of us.</p>
 
           <div class="ask-buttons-stage" id="askButtonsStage">
-            <button class="yes-btn" id="yesBtn" aria-label="Yes, absolutely accept the proposal date">
+            <button class="yes-btn" id="yesBtn" type="button" aria-label="Yes, absolutely accept the proposal date">
               <span class="yes-glow"></span>
               YES! Absolutely! ❤️
             </button>
 
-            <button class="no-btn" id="noBtn" aria-label="No option button">
+            <button class="no-btn" id="noBtn" type="button" aria-label="No option button">
               No 🙈
             </button>
           </div>
@@ -555,7 +555,7 @@
           </div>
 
           <div class="finale-footer">
-            <button class="diegetic-continue-link font-handwritten replay-link" id="replayBtn" aria-label="Replay memory reel from beginning">
+            <button class="diegetic-continue-link font-handwritten replay-link" id="replayBtn" type="button" aria-label="Replay memory reel from beginning">
               replay memory reel ↺
             </button>
           </div>
