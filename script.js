@@ -1,6 +1,6 @@
 /**
  * LATE NIGHT TAPE REEL - ROMANTIC PROPOSAL SPA CONTROLLER
- * Scene 4 Isolation & Multi-Scene Automated Build-Up Engine
+ * Multi-Scene Engine & Scene 5 Enhanced Proposal Dodge Architecture
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -412,13 +412,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (buildupSequenceTimer) clearTimeout(buildupSequenceTimer);
 
-    // Automated non-interactive sequence flow
     setTimeout(() => { if (line1) line1.classList.add('show'); }, 400);
     setTimeout(() => { if (line2) line2.classList.add('show'); }, 1400);
     setTimeout(() => { if (flashbackCard) flashbackCard.classList.add('show-card'); }, 2400);
     setTimeout(() => { if (line3) line3.classList.add('show'); }, 3800);
 
-    // Automatic transition into Scene 5 (The Ask) at 6.0 seconds
     buildupSequenceTimer = setTimeout(() => {
       if (currentScene === 4) {
         goToScene(5);
@@ -427,7 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // SCENE 5: THE ASK & PLAYFUL DODGING "NO" BUTTON
+  // SCENE 5: THE ASK (ENHANCED DODGING "NO" ENGINE & CONFIDENT YES)
   // ==========================================================================
   const yesBtn = document.getElementById('yesBtn');
   const noBtn = document.getElementById('noBtn');
@@ -435,49 +433,103 @@ document.addEventListener('DOMContentLoaded', () => {
   const stickyNotesContainer = document.getElementById('stickyNotesContainer');
 
   let dodgeCount = 0;
+  const maxDodges = 6;
   let yesScale = 1;
+
+  // Handwritten voice reaction captions
   const stickyMessages = [
-    "Are you sure? 🥺",
-    "Wait, misclick? 🙈",
-    "Think about the boba! 🧋",
-    "Re-calculating... ⚡",
-    "Nice try! 😉",
-    "Look how big the YES button is! ❤️",
-    "You know you want to say yes! ✨",
-    "Destiny says YES! 💫"
+    "Wait, misclick? Let me help you out... 🙈",
+    "Are you sure? Think about our late-night boba runs! 🧋",
+    "Nice try! But destiny has already written this frame. ✨",
+    "Look how warm and glowing that YES button is getting! ❤️",
+    "The 'No' button is getting dizzy... try the green one! 💫",
+    "Error 404: 'No' option not found in our memory tape. 📼",
+    "Even the camera is rooting for YES! 🎥",
+    "Alright, I'll make the YES button impossible to miss! 😊",
+    "You know you want to say yes... just tap it! 💖",
+    "Resistance is futile! Our date awaits! 🎟️"
   ];
 
   function dodgeNoButton(e) {
     if (e) e.preventDefault();
 
     dodgeCount++;
+
+    // Check if max dodges reached -> Surrender defeat!
+    if (dodgeCount >= maxDodges) {
+      surrenderNoButton();
+      return;
+    }
+
     const stageRect = askButtonsStage.getBoundingClientRect();
     const noRect = noBtn.getBoundingClientRect();
 
-    const maxX = stageRect.width - noRect.width;
-    const maxY = stageRect.height - noRect.height;
+    const maxX = Math.max(20, stageRect.width - noRect.width - 20);
+    const maxY = Math.max(20, stageRect.height - noRect.height - 20);
 
-    const randomX = Math.floor(Math.random() * (maxX - 20)) + 10;
-    const randomY = Math.floor(Math.random() * (maxY - 20)) + 10;
+    // Escape Pattern Variation Logic
+    const pattern = dodgeCount % 5;
+    let newX = 0;
+    let newY = 0;
 
-    noBtn.style.left = `${randomX}px`;
-    noBtn.style.top = `${randomY}px`;
+    if (pattern === 0) {
+      // Standard random leap across stage
+      newX = Math.floor(Math.random() * maxX);
+      newY = Math.floor(Math.random() * maxY);
+    } else if (pattern === 1) {
+      // Fake-move toward center, then dart away
+      newX = Math.floor(maxX * 0.85);
+      newY = Math.floor(maxY * 0.15);
+      noBtn.style.transform = 'scale(1.15) rotate(15deg)';
+      setTimeout(() => { noBtn.style.transform = 'scale(1) rotate(0deg)'; }, 200);
+    } else if (pattern === 2) {
+      // Hide near top-right corner behind preview
+      newX = Math.floor(maxX * 0.9);
+      newY = -30;
+    } else if (pattern === 3) {
+      // Orbit around YES button to top left
+      newX = 15;
+      newY = 15;
+    } else {
+      // Shrink and retreat to bottom center
+      newX = Math.floor(maxX * 0.5);
+      newY = Math.floor(maxY * 0.9);
+      noBtn.style.transform = 'scale(0.8) rotate(-10deg)';
+      setTimeout(() => { noBtn.style.transform = 'scale(1) rotate(0deg)'; }, 200);
+    }
 
-    yesScale += 0.12;
+    noBtn.style.left = `${newX}px`;
+    noBtn.style.top = `${newY}px`;
+
+    // Confident YES Button Expansion
+    yesScale += 0.14;
     yesBtn.style.transform = `scale(${yesScale})`;
-    yesBtn.style.boxShadow = `0 ${10 * yesScale}px ${25 * yesScale}px rgba(16, 185, 129, 0.6)`;
+    yesBtn.classList.add('yes-super-confident');
 
-    spawnStickyNote(stickyMessages[dodgeCount % stickyMessages.length]);
+    // Spawn witty handwritten reaction note
+    spawnStickyNote(stickyMessages[(dodgeCount - 1) % stickyMessages.length]);
+  }
+
+  function surrenderNoButton() {
+    if (!noBtn) return;
+    noBtn.classList.add('no-surrendered');
+    noBtn.textContent = "Surrendered! 🏳️";
+    spawnStickyNote("The 'No' button has officially retired! Only YES remains. ❤️");
+
+    // Maximize YES button confidence!
+    yesBtn.style.transform = `scale(${yesScale + 0.2})`;
   }
 
   function spawnStickyNote(msg) {
+    if (!stickyNotesContainer) return;
+
     const note = document.createElement('div');
     note.className = 'sticky-note';
     note.textContent = msg;
 
     const rot = Math.floor(Math.random() * 20) - 10;
-    const topPos = Math.floor(Math.random() * 60) + 10;
-    const leftPos = Math.floor(Math.random() * 70) + 15;
+    const topPos = Math.floor(Math.random() * 50) + 10;
+    const leftPos = Math.floor(Math.random() * 60) + 20;
 
     note.style.top = `${topPos}%`;
     note.style.left = `${leftPos}%`;
@@ -485,7 +537,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     stickyNotesContainer.appendChild(note);
 
-    if (stickyNotesContainer.children.length > 5) {
+    if (stickyNotesContainer.children.length > 4) {
       stickyNotesContainer.removeChild(stickyNotesContainer.firstChild);
     }
   }
@@ -594,10 +646,17 @@ document.addEventListener('DOMContentLoaded', () => {
       if (confettiAnimId) cancelAnimationFrame(confettiAnimId);
       currentQuestionIndex = 0;
       savedAnswersCount = 0;
-      if (savedCountText) savedCountText.textContent = 'Saved: 0/4';
+      dodgeCount = 0;
       yesScale = 1;
-      if (yesBtn) yesBtn.style.transform = 'scale(1)';
+
+      if (savedCountText) savedCountText.textContent = 'Saved: 0/4';
+      if (yesBtn) {
+        yesBtn.style.transform = 'scale(1)';
+        yesBtn.classList.remove('yes-super-confident');
+      }
       if (noBtn) {
+        noBtn.classList.remove('no-surrendered');
+        noBtn.textContent = "No 🙈";
         noBtn.style.left = 'auto';
         noBtn.style.top = 'auto';
       }

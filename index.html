@@ -384,10 +384,8 @@
     <section class="scene-section" id="scene-4" data-scene-id="4">
       <div class="scene-content buildup-container">
         
-        <!-- Ambient Heartbeat Ring Overlay -->
         <div class="heartbeat-ring" aria-hidden="true"></div>
 
-        <!-- Atmospheric Flashback Tension Box -->
         <div class="suspense-box">
           <div class="suspense-hud font-mono">
             <span class="rec-dot"></span>
@@ -398,7 +396,6 @@
             <p class="buildup-line" id="buildupLine1">Before I ask...</p>
             <p class="buildup-line highlight-text" id="buildupLine2">take a slow breath.</p>
 
-            <!-- Flashback Memory Beat Photo Frame -->
             <div class="flashback-card" id="flashbackCard">
               <div class="tape-strip top-center"></div>
               <div class="flashback-img-wrapper">
@@ -422,7 +419,7 @@
           <div class="tape-strip top-left"></div>
           <div class="tape-strip top-right"></div>
 
-          <div class="proposal-gif-preview">
+          <div class="proposal-gif-preview" id="proposalGifPreview">
             <img src="assets/request.gif" alt="Cute proposal ask" class="ask-cute-gif">
           </div>
 
@@ -430,6 +427,7 @@
           <h2 class="ask-heading font-handwritten">Will you go out with me?</h2>
           <p class="ask-subtext">On a real, special date—just the two of us.</p>
 
+          <!-- Action Buttons Area -->
           <div class="ask-buttons-stage" id="askButtonsStage">
             <button class="yes-btn" id="yesBtn">
               <span class="yes-glow"></span>
@@ -441,6 +439,7 @@
             </button>
           </div>
 
+          <!-- Container for dynamic handwritten sticky note reactions -->
           <div class="sticky-notes-container" id="stickyNotesContainer" aria-live="polite"></div>
         </div>
       </div>

@@ -989,7 +989,7 @@ html, body {
 }
 
 /* ==========================================================================
-   SCENE 4: THE BUILD-UP (FLASHBACK BEAT & AUTOMATED TRANSITION)
+   SCENE 4: THE BUILD-UP
    ========================================================================== */
 .buildup-container {
   gap: 1.5rem;
@@ -1063,7 +1063,6 @@ html, body {
   color: var(--accent-amber);
 }
 
-/* Flashback Memory Photo Card Beat */
 .flashback-card {
   position: relative;
   background: var(--paper-light);
@@ -1113,7 +1112,7 @@ html, body {
 }
 
 /* ==========================================================================
-   SCENE 5: THE ASK (DODGING NO BUTTON)
+   SCENE 5: THE ASK (MULTI-PATTERN DODGING NO & CONFIDENT YES)
    ========================================================================== */
 .ask-container {
   width: 100%;
@@ -1125,7 +1124,7 @@ html, body {
   max-width: 480px;
   background: var(--paper-light);
   color: #0F172A;
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 2.2rem 1.8rem 2.8rem 1.8rem;
   box-shadow: var(--shadow-polaroid);
   display: flex;
@@ -1133,17 +1132,23 @@ html, body {
   align-items: center;
   text-align: center;
   gap: 1rem;
+  overflow: visible;
+}
+
+.proposal-gif-preview {
+  position: relative;
+  z-index: 2;
 }
 
 .ask-cute-gif {
-  width: 120px;
-  height: 120px;
+  width: 130px;
+  height: 130px;
   object-fit: contain;
-  border-radius: 12px;
+  border-radius: 14px;
 }
 
 .ask-heading {
-  font-size: 3rem;
+  font-size: 3.2rem;
   color: #0B132B;
   line-height: 1.1;
   margin-top: 4px;
@@ -1157,7 +1162,7 @@ html, body {
 .ask-buttons-stage {
   position: relative;
   width: 100%;
-  min-height: 100px;
+  min-height: 120px;
   margin-top: 1rem;
   display: flex;
   align-items: center;
@@ -1165,40 +1170,61 @@ html, body {
   gap: 16px;
 }
 
+/* Confident YES Button */
 .yes-btn {
-  background: linear-gradient(135deg, #10B981, #059669);
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
   color: #FFF;
-  border: none;
-  padding: 16px 32px;
-  border-radius: 30px;
+  border: 2px solid #34D399;
+  padding: 16px 36px;
+  border-radius: 35px;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   cursor: pointer;
   box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
-  transition: transform 0.3s var(--transition-smooth), font-size 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.35s var(--transition-smooth);
   z-index: 10;
   position: relative;
 }
 
 .yes-btn:hover {
-  transform: scale(1.05);
+  transform: scale(1.06);
   box-shadow: 0 15px 35px rgba(16, 185, 129, 0.7);
 }
 
+.yes-btn.yes-super-confident {
+  animation: yesConfidentPulse 1.8s infinite ease-in-out;
+}
+
+@keyframes yesConfidentPulse {
+  0%, 100% { box-shadow: 0 0 25px rgba(16, 185, 129, 0.6); }
+  50% { box-shadow: 0 0 50px rgba(16, 185, 129, 0.95), 0 0 70px rgba(255, 183, 3, 0.5); }
+}
+
+/* Dynamic Dodging NO Button */
 .no-btn {
   background: #EF4444;
   color: #FFF;
-  border: none;
+  border: 1px solid #F87171;
   padding: 14px 28px;
   border-radius: 30px;
   font-family: var(--font-body);
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: transform 0.15s ease-out, opacity 0.3s ease;
+  transition: left 0.25s var(--transition-smooth), top 0.25s var(--transition-smooth), transform 0.3s ease, opacity 0.3s ease;
   z-index: 20;
   position: absolute;
+}
+
+/* NO Button Defeat / Surrendered State */
+.no-btn.no-surrendered {
+  background: #64748B !important;
+  border-color: #94A3B8 !important;
+  transform: translateY(45px) rotate(85deg) scale(0.6) !important;
+  opacity: 0.45 !important;
+  pointer-events: none !important;
+  box-shadow: none !important;
 }
 
 .sticky-notes-container {
@@ -1215,10 +1241,11 @@ html, body {
   padding: 8px 14px;
   border-radius: 4px;
   font-family: var(--font-display);
-  font-size: 1.3rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  font-size: 1.35rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transform: rotate(-4deg);
   animation: stickyPop 0.4s var(--transition-smooth) forwards;
+  pointer-events: none;
 }
 
 @keyframes stickyPop {
