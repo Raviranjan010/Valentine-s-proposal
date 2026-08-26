@@ -1,6 +1,6 @@
 /**
  * LATE NIGHT TAPE REEL - ROMANTIC PROPOSAL SPA CONTROLLER
- * Scene 3 Isolation & Multi-Scene Engine
+ * Scene 4 Isolation & Multi-Scene Automated Build-Up Engine
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -256,7 +256,6 @@ document.addEventListener('DOMContentLoaded', () => {
     savedAnswersCount++;
     savedCountText.textContent = `Saved: ${savedAnswersCount}/4`;
 
-    // Trigger visual vault save effect on widget
     if (memoryNotebookWidget) {
       memoryNotebookWidget.classList.remove('vault-saved');
       void memoryNotebookWidget.offsetWidth;
@@ -278,14 +277,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       qProgressText.textContent = `Question ${currentQuestionIndex + 1} of ${questionCards.length}`;
     } else {
-      // All 4 questions answered -> Proceed to Scene 4 (Build-Up)
       setTimeout(() => {
         goToScene(4);
       }, 500);
     }
   }
 
-  // Question 1: Short Text Input
   const q1Input = document.getElementById('q1Input');
   const q1SubmitBtn = document.getElementById('q1SubmitBtn');
 
@@ -306,7 +303,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Question 2: Multiple Choice Options
   const q2Options = document.querySelectorAll('[data-q2-option]');
   q2Options.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -319,14 +315,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Question 3: Heart-Shaped Gauge Dial Slider
   const heartGaugeStage = document.getElementById('heartGaugeStage');
   const gaugeHeartHandle = document.getElementById('gaugeHeartHandle');
   const gaugeArcFill = document.getElementById('gaugeArcFill');
   const gaugeStatusText = document.getElementById('gaugeStatusText');
   const q3SubmitBtn = document.getElementById('q3SubmitBtn');
 
-  let gaugeValue = 0.85; // Default 85%
+  let gaugeValue = 0.85;
 
   function updateHeartGauge(percent) {
     gaugeValue = Math.max(0, Math.min(1, percent));
@@ -379,7 +374,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Question 4: Short Text Input
   const q4Input = document.getElementById('q4Input');
   const q4SubmitBtn = document.getElementById('q4SubmitBtn');
 
@@ -401,46 +395,35 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // SCENE 4: THE BUILD-UP
+  // SCENE 4: THE BUILD-UP (FLASHBACK BEAT & AUTOMATED TRANSITION ENGINE)
   // ==========================================================================
-  let buildupTimer = null;
-  const skipBuildupBtn = document.getElementById('skipBuildupBtn');
+  let buildupSequenceTimer = null;
 
   function initBuildupScene() {
     const line1 = document.getElementById('buildupLine1');
     const line2 = document.getElementById('buildupLine2');
     const line3 = document.getElementById('buildupLine3');
-    const countdownNum = document.getElementById('countdownNum');
+    const flashbackCard = document.getElementById('flashbackCard');
 
-    line1.classList.remove('show');
-    line2.classList.remove('show');
-    line3.classList.remove('show');
+    if (line1) line1.classList.remove('show');
+    if (line2) line2.classList.remove('show');
+    if (line3) line3.classList.remove('show');
+    if (flashbackCard) flashbackCard.classList.remove('show-card');
 
-    let count = 3;
-    countdownNum.textContent = count;
+    if (buildupSequenceTimer) clearTimeout(buildupSequenceTimer);
 
-    setTimeout(() => line1.classList.add('show'), 300);
-    setTimeout(() => line2.classList.add('show'), 1200);
-    setTimeout(() => line3.classList.add('show'), 2100);
+    // Automated non-interactive sequence flow
+    setTimeout(() => { if (line1) line1.classList.add('show'); }, 400);
+    setTimeout(() => { if (line2) line2.classList.add('show'); }, 1400);
+    setTimeout(() => { if (flashbackCard) flashbackCard.classList.add('show-card'); }, 2400);
+    setTimeout(() => { if (line3) line3.classList.add('show'); }, 3800);
 
-    if (buildupTimer) clearInterval(buildupTimer);
-
-    buildupTimer = setInterval(() => {
-      count--;
-      if (count > 0) {
-        countdownNum.textContent = count;
-      } else {
-        clearInterval(buildupTimer);
+    // Automatic transition into Scene 5 (The Ask) at 6.0 seconds
+    buildupSequenceTimer = setTimeout(() => {
+      if (currentScene === 4) {
         goToScene(5);
       }
-    }, 1200);
-  }
-
-  if (skipBuildupBtn) {
-    skipBuildupBtn.addEventListener('click', () => {
-      if (buildupTimer) clearInterval(buildupTimer);
-      goToScene(5);
-    });
+    }, 6000);
   }
 
   // ==========================================================================

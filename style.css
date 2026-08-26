@@ -290,25 +290,7 @@ html, body {
   text-align: center;
 }
 
-/* Common Buttons & Tape Strips */
-.secondary-btn {
-  background: rgba(28, 37, 65, 0.8);
-  color: var(--paper-light);
-  border: 1px solid rgba(244, 162, 97, 0.4);
-  padding: 12px 24px;
-  border-radius: 30px;
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.secondary-btn:hover {
-  background: rgba(244, 162, 97, 0.2);
-  border-color: var(--accent-rust);
-  color: #FFF;
-}
-
+/* Common Tape Strips */
 .tape-strip {
   position: absolute;
   width: 90px;
@@ -752,7 +734,7 @@ html, body {
 }
 
 /* ==========================================================================
-   SCENE 3: THE QUESTIONS (ISOLATED MULTI-TYPE INPUTS & VAULT)
+   SCENE 3: THE QUESTIONS
    ========================================================================== */
 .questions-container {
   gap: 1rem;
@@ -767,7 +749,6 @@ html, body {
   max-width: 480px;
 }
 
-/* Pinned Memory Notebook Vault Widget */
 .memory-notebook-widget {
   background: rgba(28, 37, 65, 0.85);
   border: 1px solid rgba(255, 183, 3, 0.4);
@@ -855,7 +836,6 @@ html, body {
   line-height: 1.3;
 }
 
-/* Handwritten Text Inputs */
 .input-answer-group {
   display: flex;
   flex-direction: column;
@@ -905,7 +885,6 @@ html, body {
   transform: translateX(4px);
 }
 
-/* Multiple Choice Buttons */
 .options-grid {
   display: flex;
   flex-direction: column;
@@ -941,7 +920,6 @@ html, body {
   box-shadow: 0 0 15px rgba(255, 183, 3, 0.5);
 }
 
-/* Heart-Shaped Gauge Dial Slider */
 .heart-gauge-wrapper {
   display: flex;
   flex-direction: column;
@@ -1011,52 +989,59 @@ html, body {
 }
 
 /* ==========================================================================
-   SCENE 4: THE BUILD-UP
+   SCENE 4: THE BUILD-UP (FLASHBACK BEAT & AUTOMATED TRANSITION)
    ========================================================================== */
 .buildup-container {
-  gap: 2rem;
+  gap: 1.5rem;
   position: relative;
 }
 
 .heartbeat-ring {
   position: absolute;
-  width: 320px;
-  height: 320px;
+  width: 340px;
+  height: 340px;
   border-radius: 50%;
-  border: 2px solid rgba(244, 162, 97, 0.2);
+  border: 2px solid rgba(255, 183, 3, 0.25);
   pointer-events: none;
-  animation: heartPulseRing 2s infinite ease-out;
+  animation: heartPulseRing 2.2s infinite ease-out;
 }
 
 @keyframes heartPulseRing {
   0% { transform: scale(0.6); opacity: 0.8; }
-  100% { transform: scale(1.5); opacity: 0; }
+  100% { transform: scale(1.4); opacity: 0; }
 }
 
 .suspense-box {
-  background: rgba(28, 37, 65, 0.9);
+  background: rgba(28, 37, 65, 0.95);
   border: 1px solid rgba(255, 183, 3, 0.4);
-  border-radius: 20px;
-  padding: 2.5rem 1.8rem;
+  border-radius: 24px;
+  padding: 2.2rem 1.6rem;
   box-shadow: var(--shadow-polaroid);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.8rem;
-  max-width: 480px;
+  gap: 1.2rem;
+  max-width: 460px;
   width: 100%;
+  position: relative;
+  z-index: 10;
 }
 
 .suspense-hud {
   font-size: 0.7rem;
-  color: var(--accent-rust);
+  color: var(--accent-amber);
   letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .typewriter-quote {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
 }
 
 .buildup-line {
@@ -1074,39 +1059,57 @@ html, body {
 
 .buildup-line.highlight-text {
   font-family: var(--font-display);
-  font-size: 2.4rem;
+  font-size: 2.5rem;
   color: var(--accent-amber);
 }
 
-.countdown-pulse {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
+/* Flashback Memory Photo Card Beat */
+.flashback-card {
+  position: relative;
+  background: var(--paper-light);
+  padding: 12px 12px 24px 12px;
+  border-radius: 6px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transform: scale(0.92) rotate(-2deg);
+  transition: all 0.8s var(--transition-smooth);
+  max-width: 320px;
+  width: 100%;
+  margin: 0.5rem 0;
 }
 
-.pulse-number {
-  font-size: 3.5rem;
-  font-family: var(--font-mono);
-  font-weight: 700;
-  color: var(--accent-amber);
-  text-shadow: 0 0 20px rgba(255, 183, 3, 0.8);
-  animation: numberBeats 1s infinite;
+.flashback-card.show-card {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+  animation: flashbackGlow 3s infinite ease-in-out;
 }
 
-@keyframes numberBeats {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
+@keyframes flashbackGlow {
+  0%, 100% { box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6); }
+  50% { box-shadow: 0 15px 45px rgba(255, 183, 3, 0.5); }
 }
 
-.pulse-label {
-  font-size: 0.75rem;
-  color: var(--text-muted);
+.flashback-img-wrapper {
+  width: 100%;
+  height: 200px;
+  background: #000;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  position: relative;
 }
 
-.skip-buildup-btn {
-  font-size: 0.85rem;
-  opacity: 0.8;
+.flashback-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.flashback-stamp {
+  font-size: 0.65rem;
+  color: #475569;
+  margin-top: 8px;
+  letter-spacing: 0.5px;
 }
 
 /* ==========================================================================
