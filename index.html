@@ -427,7 +427,6 @@
           <h2 class="ask-heading font-handwritten">Will you go out with me?</h2>
           <p class="ask-subtext">On a real, special date—just the two of us.</p>
 
-          <!-- Action Buttons Area -->
           <div class="ask-buttons-stage" id="askButtonsStage">
             <button class="yes-btn" id="yesBtn">
               <span class="yes-glow"></span>
@@ -439,63 +438,83 @@
             </button>
           </div>
 
-          <!-- Container for dynamic handwritten sticky note reactions -->
           <div class="sticky-notes-container" id="stickyNotesContainer" aria-live="polite"></div>
         </div>
       </div>
     </section>
 
-    <!-- ==================== SCENE 6: CELEBRATION ==================== -->
+    <!-- ==================== SCENE 6: CELEBRATION (FINALE) ==================== -->
     <section class="scene-section" id="scene-6" data-scene-id="6">
+      
+      <!-- Theme Canvas Sparkle & Fairy Particle Engine -->
       <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
 
       <div class="scene-content celebration-container">
         <div class="celebration-card">
           <div class="tape-strip top-center"></div>
 
-          <div class="celebration-badge font-mono">STATUS: CONFIRMED • IT'S A DATE!</div>
+          <!-- Non-Intrusive Audio Control Pill -->
+          <div class="audio-status-pill font-mono" id="celebrationAudioControl" role="button" tabindex="0">
+            <span class="audio-pill-icon">🎵</span>
+            <span class="audio-pill-text" id="celebrationAudioText">Music Playing...</span>
+          </div>
 
+          <span class="section-tag font-handwritten">It's Official!</span>
           <h2 class="celebration-title font-handwritten">YAYYY! 🎉❤️</h2>
-          <p class="celebration-subtitle">I knew you'd say yes! You just made my entire world smile.</p>
 
-          <div class="celebration-gifs-grid">
-            <div class="gif-frame">
-              <img src="assets/proposal.gif" alt="Celebration GIF 1" class="celebration-gif">
+          <!-- Emotional Climax Reward GIFs Showcase Grid -->
+          <div class="celebration-climax-grid">
+            <div class="climax-frame frame-left">
+              <div class="tape-strip top-left"></div>
+              <div class="climax-img-wrapper">
+                <img src="assets/proposal.gif" alt="Proposal Celebration GIF" class="climax-gif">
+              </div>
+              <div class="climax-caption font-handwritten">"Best answer ever!"</div>
             </div>
-            <div class="gif-frame">
-              <img src="assets/sure.gif" alt="Celebration GIF 2" class="celebration-gif">
+
+            <div class="climax-frame frame-right">
+              <div class="tape-strip top-right"></div>
+              <div class="climax-img-wrapper">
+                <img src="assets/sure.gif" alt="Sure Celebration GIF" class="climax-gif">
+              </div>
+              <div class="climax-caption font-handwritten">"Forever & always."</div>
             </div>
           </div>
 
-          <div class="ticket-stub font-mono">
-            <div class="ticket-header">
-              <span>SPECIAL DATE PASS</span>
-              <span>№ 001</span>
+          <!-- Final Message & Customizable Date Ticket Pass -->
+          <div class="date-ticket-pass">
+            <div class="ticket-header-row font-mono">
+              <span>SPECIAL EVENT PASS</span>
+              <span class="pass-tag">OFFICIAL REEL FINALE</span>
             </div>
-            <div class="ticket-body">
-              <div class="ticket-row">
-                <span class="ticket-label">EVENT:</span>
-                <span class="ticket-val">Our Late Night Adventure</span>
+
+            <div class="ticket-couples font-handwritten">
+              [YOUR NAME] & [THEIR NAME]
+            </div>
+
+            <div class="ticket-details font-mono">
+              <div class="ticket-field">
+                <span class="field-label">EVENT:</span>
+                <span class="field-value">[THE REAL DATE / TRIP / EVENT YOU'RE INVITING THEM TO]</span>
               </div>
-              <div class="ticket-row">
-                <span class="ticket-label">DRESS CODE:</span>
-                <span class="ticket-val">Cozy & Cute</span>
+              <div class="ticket-field">
+                <span class="field-label">DRESS CODE:</span>
+                <span class="field-value">Cozy & Cute</span>
               </div>
-              <div class="ticket-row">
-                <span class="ticket-label">LOCATION:</span>
-                <span class="ticket-val">Top Secret Spot 🤫</span>
+              <div class="ticket-field">
+                <span class="field-label">LOCATION:</span>
+                <span class="field-value">Top Secret Spot 🤫</span>
               </div>
             </div>
           </div>
 
-          <div class="celebration-actions">
-            <button class="primary-btn glow-btn" id="addToCalBtn">
-              📅 Add To Calendar / Remind Me
+          <!-- Understated Quiet Replay Link -->
+          <div class="finale-footer">
+            <button class="diegetic-continue-link font-handwritten replay-link" id="replayBtn">
+              replay memory reel ↺
             </button>
-            <button class="secondary-btn" id="replayBtn">
-              Replay Memory Reel ↺
-            </button>
           </div>
+
         </div>
       </div>
     </section>
