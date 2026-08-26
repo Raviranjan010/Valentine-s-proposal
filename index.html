@@ -87,12 +87,9 @@
 
         <!-- The Atmospheric Sealed Envelope Card -->
         <div class="envelope-card-wrapper" id="envelopeWrapper">
-          
-          <!-- Tape Strips on Desk -->
           <div class="tape-strip top-left"></div>
           <div class="tape-strip top-right"></div>
 
-          <!-- Main Envelope Body -->
           <div class="envelope-body" id="envelopeBody">
             <div class="envelope-stamp font-mono">02:00 AM • PRIVATE REEL</div>
             
@@ -116,13 +113,12 @@
                 "I put together something small for you... a memory tape of our favorite late-night moments."
               </p>
               
-              <!-- Understated Diegetic Call to Action -->
               <button class="diegetic-continue-link font-handwritten" id="turnPageBtn">
                 turn the page ➔
               </button>
             </div>
 
-            <!-- Cute Companion Peek (Mochi Cat) -->
+            <!-- Companion Peek (Mochi Cat) -->
             <div class="companion-cat-peek" title="Curious companion peeking in!">
               <img src="assets/mochi-poke-poke-cute-cat.gif" alt="Cute companion cat peeking" class="cat-gif">
             </div>
@@ -130,7 +126,6 @@
           </div>
         </div>
 
-        <!-- Footnote hint -->
         <p class="gate-hint font-mono" id="gateHintText">Tap the wax seal to unseal your letter</p>
       </div>
     </section>
@@ -140,21 +135,24 @@
       <div class="scene-content memory-container">
         <div class="scene-header">
           <span class="section-tag font-handwritten">Chapter I</span>
-          <h2 class="scene-title">Our Favorite Frames</h2>
-          <p class="scene-subtitle">Swipe or use arrows to flip through our midnight memories</p>
+          <h2 class="scene-title">Memory Lane</h2>
+          <p class="scene-subtitle font-mono">✦ Swipe or drag photos to flip through our tape reel ✦</p>
         </div>
 
         <!-- Polaroid Carousel Stage -->
-        <div class="carousel-stage">
-          <button class="carousel-nav-btn prev-btn" id="carouselPrev" aria-label="Previous Photo">❮</button>
+        <div class="carousel-stage" id="carouselStage">
 
           <div class="carousel-viewport" id="carouselViewport">
             <div class="carousel-track" id="carouselTrack">
-              <!-- Memory 1 -->
-              <div class="polaroid-card active">
+              
+              <!-- Memory 1: image3.gif -->
+              <div class="polaroid-card active" data-index="0">
                 <div class="tape-strip top-left"></div>
                 <div class="polaroid-photo-wrapper">
-                  <img src="assets/image3.gif" alt="Memory 1" class="polaroid-img" loading="lazy">
+                  <img src="assets/image3.gif" alt="Memory 1" class="polaroid-img" loading="eager">
+                </div>
+                <div class="polaroid-meta">
+                  <span class="meta-tag font-mono">📍 Rooftop • 2:14 AM</span>
                 </div>
                 <div class="polaroid-caption font-handwritten">
                   "That late night when time just completely stopped for us."
@@ -162,11 +160,14 @@
                 <div class="polaroid-stamp font-mono">01 / 10</div>
               </div>
 
-              <!-- Memory 2 -->
-              <div class="polaroid-card">
+              <!-- Memory 2: image4.gif -->
+              <div class="polaroid-card" data-index="1">
                 <div class="tape-strip top-right"></div>
                 <div class="polaroid-photo-wrapper">
                   <img src="assets/image4.gif" alt="Memory 2" class="polaroid-img" loading="lazy">
+                </div>
+                <div class="polaroid-meta">
+                  <span class="meta-tag font-mono">📍 Coffee Shop Corner</span>
                 </div>
                 <div class="polaroid-caption font-handwritten">
                   "The spontaneous silly moments that always make me smile."
@@ -174,11 +175,14 @@
                 <div class="polaroid-stamp font-mono">02 / 10</div>
               </div>
 
-              <!-- Memory 3 -->
-              <div class="polaroid-card">
+              <!-- Memory 3: image5.gif -->
+              <div class="polaroid-card" data-index="2">
                 <div class="tape-strip top-left"></div>
                 <div class="polaroid-photo-wrapper">
                   <img src="assets/image5.gif" alt="Memory 3" class="polaroid-img" loading="lazy">
+                </div>
+                <div class="polaroid-meta">
+                  <span class="meta-tag font-mono">📍 Warm String Light Glow</span>
                 </div>
                 <div class="polaroid-caption font-handwritten">
                   "Every cozy conversation under warm glowing lights."
@@ -186,11 +190,14 @@
                 <div class="polaroid-stamp font-mono">03 / 10</div>
               </div>
 
-              <!-- Memory 4 -->
-              <div class="polaroid-card">
+              <!-- Memory 4: image6.webp -->
+              <div class="polaroid-card" data-index="3">
                 <div class="tape-strip top-right"></div>
                 <div class="polaroid-photo-wrapper">
                   <img src="assets/image6.webp" alt="Memory 4" class="polaroid-img" loading="lazy">
+                </div>
+                <div class="polaroid-meta">
+                  <span class="meta-tag font-mono">📍 Stolen Glances</span>
                 </div>
                 <div class="polaroid-caption font-handwritten">
                   "Stolen glances when you thought I wasn't looking."
@@ -198,11 +205,14 @@
                 <div class="polaroid-stamp font-mono">04 / 10</div>
               </div>
 
-              <!-- Memory 5 -->
-              <div class="polaroid-card">
+              <!-- Memory 5: image7.gif -->
+              <div class="polaroid-card" data-index="4">
                 <div class="tape-strip top-left"></div>
                 <div class="polaroid-photo-wrapper">
                   <img src="assets/image7.gif" alt="Memory 5" class="polaroid-img" loading="lazy">
+                </div>
+                <div class="polaroid-meta">
+                  <span class="meta-tag font-mono">📍 Late Night Stroll</span>
                 </div>
                 <div class="polaroid-caption font-handwritten">
                   "When a random walk turned into my favorite part of the week."
@@ -210,11 +220,14 @@
                 <div class="polaroid-stamp font-mono">05 / 10</div>
               </div>
 
-              <!-- Memory 6 -->
-              <div class="polaroid-card">
+              <!-- Memory 6: image8.gif -->
+              <div class="polaroid-card" data-index="5">
                 <div class="tape-strip top-right"></div>
                 <div class="polaroid-photo-wrapper">
                   <img src="assets/image8.gif" alt="Memory 6" class="polaroid-img" loading="lazy">
+                </div>
+                <div class="polaroid-meta">
+                  <span class="meta-tag font-mono">📍 Cozy Hideaway</span>
                 </div>
                 <div class="polaroid-caption font-handwritten">
                   "That un-shakeable cozy comfort whenever you're around."
@@ -222,11 +235,14 @@
                 <div class="polaroid-stamp font-mono">06 / 10</div>
               </div>
 
-              <!-- Memory 7 -->
-              <div class="polaroid-card">
+              <!-- Memory 7: image9.gif -->
+              <div class="polaroid-card" data-index="6">
                 <div class="tape-strip top-left"></div>
                 <div class="polaroid-photo-wrapper">
                   <img src="assets/image9.gif" alt="Memory 7" class="polaroid-img" loading="lazy">
+                </div>
+                <div class="polaroid-meta">
+                  <span class="meta-tag font-mono">📍 Inside Jokes</span>
                 </div>
                 <div class="polaroid-caption font-handwritten">
                   "Shared secrets and laughing until our stomachs hurt."
@@ -234,11 +250,14 @@
                 <div class="polaroid-stamp font-mono">07 / 10</div>
               </div>
 
-              <!-- Memory 8 -->
-              <div class="polaroid-card">
+              <!-- Memory 8: image10.gif -->
+              <div class="polaroid-card" data-index="7">
                 <div class="tape-strip top-right"></div>
                 <div class="polaroid-photo-wrapper">
                   <img src="assets/image10.gif" alt="Memory 8" class="polaroid-img" loading="lazy">
+                </div>
+                <div class="polaroid-meta">
+                  <span class="meta-tag font-mono">📍 Midnight Boba</span>
                 </div>
                 <div class="polaroid-caption font-handwritten">
                   "Little inside jokes that only the two of us understand."
@@ -246,11 +265,14 @@
                 <div class="polaroid-stamp font-mono">08 / 10</div>
               </div>
 
-              <!-- Memory 9 -->
-              <div class="polaroid-card">
+              <!-- Memory 9: image11.webp -->
+              <div class="polaroid-card" data-index="8">
                 <div class="tape-strip top-left"></div>
                 <div class="polaroid-photo-wrapper">
                   <img src="assets/image11.webp" alt="Memory 9" class="polaroid-img" loading="lazy">
+                </div>
+                <div class="polaroid-meta">
+                  <span class="meta-tag font-mono">📍 Golden Hour</span>
                 </div>
                 <div class="polaroid-caption font-handwritten">
                   "Looking at you and knowing everything feels just right."
@@ -258,27 +280,32 @@
                 <div class="polaroid-stamp font-mono">09 / 10</div>
               </div>
 
-              <!-- Memory 10 -->
-              <div class="polaroid-card">
+              <!-- Memory 10: tkthao.gif -->
+              <div class="polaroid-card" data-index="9">
                 <div class="tape-strip top-right"></div>
                 <div class="polaroid-photo-wrapper">
                   <img src="assets/tkthao.gif" alt="Memory 10" class="polaroid-img" loading="lazy">
                 </div>
+                <div class="polaroid-meta">
+                  <span class="meta-tag font-mono">📍 To Be Continued...</span>
+                </div>
                 <div class="polaroid-caption font-handwritten">
-                  "And this is still just the beginning..."
+                  "And this is still just the beginning of our story."
                 </div>
                 <div class="polaroid-stamp font-mono">10 / 10</div>
               </div>
+
             </div>
           </div>
-
-          <button class="carousel-nav-btn next-btn" id="carouselNext" aria-label="Next Photo">❯</button>
         </div>
 
+        <!-- Footer Controls & Transition Trigger -->
         <div class="scene-footer">
           <div class="carousel-indicators" id="carouselDots"></div>
-          <button class="secondary-btn" id="memoryLaneDoneBtn">
-            Continue Our Story 🡓
+          
+          <!-- Soft Diegetic Transition Trigger into Questions -->
+          <button class="diegetic-continue-link font-handwritten memory-transition-trigger" id="toQuestionsBtn">
+            ready for a few questions? ➔
           </button>
         </div>
       </div>

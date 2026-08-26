@@ -1,6 +1,6 @@
 /**
  * LATE NIGHT TAPE REEL - ROMANTIC PROPOSAL SPA CONTROLLER
- * Scene 1 Isolation & Multi-Scene Engine
+ * Scene 2 Isolation & Multi-Scene Physics Engine
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         soundToggleBtn.classList.add('playing');
         soundToggleBtn.querySelector('.sound-text').textContent = 'Sound: ON';
       }).catch(err => {
-        console.log('Audio playback waiting for interaction:', err);
+        console.log('Audio playback waiting for user action:', err);
       });
     } else {
       bgMusic.pause();
@@ -123,18 +123,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const turnPageBtn = document.getElementById('turnPageBtn');
 
   function openWaxSeal() {
-    // 1. Play ambient music / unlock browser audio context
     toggleAudio(true);
-
-    // 2. Trigger wax seal crack animation
     waxSeal.classList.add('cracked');
 
-    // 3. Trigger cascading string lights animation
     if (ambientLights) {
       ambientLights.classList.add('cascade-active');
     }
 
-    // 4. Reveal handwritten letter content
     setTimeout(() => {
       waxSeal.style.display = 'none';
       letterRevealContent.classList.add('revealed');
@@ -142,89 +137,127 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 450);
   }
 
-  waxSeal.addEventListener('click', openWaxSeal);
-  waxSeal.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      openWaxSeal();
-    }
-  });
+  if (waxSeal) {
+    waxSeal.addEventListener('click', openWaxSeal);
+    waxSeal.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') openWaxSeal();
+    });
+  }
 
-  turnPageBtn.addEventListener('click', () => {
-    goToScene(2);
-  });
+  if (turnPageBtn) {
+    turnPageBtn.addEventListener('click', () => goToScene(2));
+  }
 
   // ==========================================================================
-  // SCENE 2: MEMORY LANE (POLAROID CAROUSEL)
+  // SCENE 2: MEMORY LANE (PHYSICS-BASED POLAROID SWIPE ENGINE)
   // ==========================================================================
   let currentPolaroidIndex = 0;
   const polaroids = document.querySelectorAll('.polaroid-card');
+  const carouselStage = document.getElementById('carouselStage');
   const carouselTrack = document.getElementById('carouselTrack');
-  const carouselPrev = document.getElementById('carouselPrev');
-  const carouselNext = document.getElementById('carouselNext');
   const carouselDotsContainer = document.getElementById('carouselDots');
-  const memoryLaneDoneBtn = document.getElementById('memoryLaneDoneBtn');
+  const toQuestionsBtn = document.getElementById('toQuestionsBtn');
 
-  // Build dots
-  polaroids.forEach((_, idx) => {
-    const dot = document.createElement('div');
-    dot.className = `carousel-dot ${idx === 0 ? 'active' : ''}`;
-    dot.addEventListener('click', () => updateCarousel(idx));
-    carouselDotsContainer.appendChild(dot);
-  });
+  // Build diegetic indicator dots
+  if (carouselDotsContainer) {
+    carouselDotsContainer.innerHTML = '';
+    polaroids.forEach((_, idx) => {
+      const dot = document.createElement('div');
+      dot.className = `carousel-dot ${idx === 0 ? 'active' : ''}`;
+      dot.addEventListener('click', () => setPolaroidIndex(idx));
+      carouselDotsContainer.appendChild(dot);
+    });
+  }
 
   const carouselDots = document.querySelectorAll('.carousel-dot');
 
-  function updateCarousel(index) {
-    if (index < 0) index = polaroids.length - 1;
-    if (index >= polaroids.length) index = 0;
+  function setPolaroidIndex(index) {
+    if (index < 0) index = 0;
+    if (index >= polaroids.length) index = polaroids.length - 1;
 
     currentPolaroidIndex = index;
+    carouselTrack.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
     carouselTrack.style.transform = `translateX(-${currentPolaroidIndex * 100}%)`;
 
     polaroids.forEach((card, idx) => {
       card.classList.toggle('active', idx === currentPolaroidIndex);
+      if (idx === currentPolaroidIndex) {
+        card.style.transform = 'rotate(0deg) scale(1)';
+      } else {
+        const rot = idx % 2 === 0 ? -1.5 : 1.8;
+        card.style.transform = `rotate(${rot}deg) scale(0.97)`;
+      }
     });
 
     carouselDots.forEach((dot, idx) => {
       dot.classList.toggle('active', idx === currentPolaroidIndex);
     });
-  }
 
-  if (carouselPrev) carouselPrev.addEventListener('click', () => updateCarousel(currentPolaroidIndex - 1));
-  if (carouselNext) carouselNext.addEventListener('click', () => updateCarousel(currentPolaroidIndex + 1));
-  if (memoryLaneDoneBtn) memoryLaneDoneBtn.addEventListener('click', () => goToScene(3));
-
-  // Touch Swipe Support for Memory Lane
-  let touchStartX = 0;
-  let touchEndX = 0;
-  const carouselViewport = document.getElementById('carouselViewport');
-
-  if (carouselViewport) {
-    carouselViewport.addEventListener('touchstart', e => {
-      touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-
-    carouselViewport.addEventListener('touchend', e => {
-      touchEndX = e.changedTouches[0].screenX;
-      handleSwipe();
-    }, { passive: true });
-  }
-
-  function handleSwipe() {
-    const swipeThreshold = 40;
-    if (touchEndX < touchStartX - swipeThreshold) {
-      updateCarousel(currentPolaroidIndex + 1);
-    }
-    if (touchEndX > touchStartX + swipeThreshold) {
-      updateCarousel(currentPolaroidIndex - 1);
+    // If visitor reaches the final memory card (card 10, tkthao.gif), reveal soft transition trigger
+    if (currentPolaroidIndex === polaroids.length - 1 && toQuestionsBtn) {
+      toQuestionsBtn.classList.add('show-trigger');
     }
   }
 
-  // Keyboard navigation for carousel
+  // Pointer & Physics Drag Implementation
+  let isDragging = false;
+  let startX = 0;
+  let dragDeltaX = 0;
+
+  if (carouselStage) {
+    carouselStage.addEventListener('pointerdown', (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      dragDeltaX = 0;
+      carouselTrack.style.transition = 'none';
+    });
+
+    window.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      dragDeltaX = e.clientX - startX;
+
+      const baseOffset = -currentPolaroidIndex * carouselStage.offsetWidth;
+      carouselTrack.style.transform = `translateX(${baseOffset + dragDeltaX}px)`;
+
+      // Apply rotation physics to current active card
+      const activeCard = polaroids[currentPolaroidIndex];
+      if (activeCard) {
+        const rotAngle = Math.max(-12, Math.min(12, dragDeltaX * 0.06));
+        activeCard.style.transform = `rotate(${rotAngle}deg) scale(0.99)`;
+      }
+    });
+
+    window.addEventListener('pointerup', (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+
+      const swipeThreshold = 45;
+      if (dragDeltaX < -swipeThreshold) {
+        setPolaroidIndex(currentPolaroidIndex + 1);
+      } else if (dragDeltaX > swipeThreshold) {
+        setPolaroidIndex(currentPolaroidIndex - 1);
+      } else {
+        setPolaroidIndex(currentPolaroidIndex);
+      }
+    });
+
+    window.addEventListener('pointercancel', () => {
+      if (isDragging) {
+        isDragging = false;
+        setPolaroidIndex(currentPolaroidIndex);
+      }
+    });
+  }
+
+  if (toQuestionsBtn) {
+    toQuestionsBtn.addEventListener('click', () => goToScene(3));
+  }
+
+  // Keyboard left/right arrow listener
   document.addEventListener('keydown', e => {
     if (currentScene === 2) {
-      if (e.key === 'ArrowRight') updateCarousel(currentPolaroidIndex + 1);
-      if (e.key === 'ArrowLeft') updateCarousel(currentPolaroidIndex - 1);
+      if (e.key === 'ArrowRight') setPolaroidIndex(currentPolaroidIndex + 1);
+      if (e.key === 'ArrowLeft') setPolaroidIndex(currentPolaroidIndex - 1);
     }
   });
 
