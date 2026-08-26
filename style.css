@@ -1112,7 +1112,7 @@ html, body {
 }
 
 /* ==========================================================================
-   SCENE 5: THE ASK (MULTI-PATTERN DODGING NO & CONFIDENT YES)
+   SCENE 5: THE ASK
    ========================================================================== */
 .ask-container {
   width: 100%;
@@ -1170,7 +1170,6 @@ html, body {
   gap: 16px;
 }
 
-/* Confident YES Button */
 .yes-btn {
   background: linear-gradient(135deg, #10B981 0%, #059669 100%);
   color: #FFF;
@@ -1201,7 +1200,6 @@ html, body {
   50% { box-shadow: 0 0 50px rgba(16, 185, 129, 0.95), 0 0 70px rgba(255, 183, 3, 0.5); }
 }
 
-/* Dynamic Dodging NO Button */
 .no-btn {
   background: #EF4444;
   color: #FFF;
@@ -1217,7 +1215,6 @@ html, body {
   position: absolute;
 }
 
-/* NO Button Defeat / Surrendered State */
 .no-btn.no-surrendered {
   background: #64748B !important;
   border-color: #94A3B8 !important;
@@ -1254,7 +1251,7 @@ html, body {
 }
 
 /* ==========================================================================
-   SCENE 6: CELEBRATION
+   SCENE 6: CELEBRATION (FINALE & EMOTIONAL PAYOFF)
    ========================================================================== */
 .confetti-canvas {
   position: absolute;
@@ -1277,109 +1274,172 @@ html, body {
   background: var(--bg-indigo);
   border: 2px solid var(--accent-amber);
   border-radius: 24px;
-  padding: 2.2rem 1.6rem;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 183, 3, 0.3);
+  padding: 2.5rem 1.8rem;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(255, 183, 3, 0.35);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.2rem;
-  max-width: 500px;
+  max-width: 520px;
   width: 100%;
 }
 
-.celebration-badge {
-  font-size: 0.7rem;
-  color: var(--accent-amber);
-  letter-spacing: 1px;
+/* Audio Status Pill Widget */
+.audio-status-pill {
+  background: rgba(11, 19, 43, 0.85);
   border: 1px dashed var(--accent-amber);
-  padding: 4px 12px;
+  color: var(--accent-amber);
+  padding: 4px 14px;
   border-radius: 20px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.audio-status-pill:hover {
+  background: rgba(255, 183, 3, 0.2);
+  transform: scale(1.04);
 }
 
 .celebration-title {
-  font-size: 3.2rem;
+  font-size: 3.5rem;
   color: var(--accent-amber);
   line-height: 1.1;
-  text-shadow: 0 0 20px rgba(255, 183, 3, 0.6);
+  text-shadow: 0 0 25px rgba(255, 183, 3, 0.6);
 }
 
-.celebration-subtitle {
-  font-size: 1rem;
-  color: var(--paper-light);
-  line-height: 1.4;
-}
-
-.celebration-gifs-grid {
+/* Emotional Climax GIFs Showcase Grid */
+.celebration-climax-grid {
   display: flex;
-  gap: 12px;
+  gap: 16px;
   justify-content: center;
   width: 100%;
+  margin: 0.5rem 0;
 }
 
-.gif-frame {
-  width: 140px;
-  height: 140px;
-  border-radius: 12px;
+.climax-frame {
+  position: relative;
+  background: var(--paper-light);
+  padding: 10px 10px 18px 10px;
+  border-radius: 4px;
+  box-shadow: var(--shadow-polaroid);
+  width: 170px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.4s ease;
+}
+
+.climax-frame.frame-left {
+  transform: rotate(-3deg);
+}
+
+.climax-frame.frame-right {
+  transform: rotate(4deg);
+}
+
+.climax-frame:hover {
+  transform: rotate(0deg) scale(1.05);
+  z-index: 15;
+}
+
+.climax-img-wrapper {
+  width: 100%;
+  height: 150px;
+  background: #000;
   overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-.celebration-gif {
+.climax-gif {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
-.ticket-stub {
+.climax-caption {
+  font-size: 1.35rem;
+  color: #0F172A;
+  margin-top: 6px;
+  line-height: 1.1;
+}
+
+/* Final Event Ticket Stub */
+.date-ticket-pass {
   background: var(--paper-light);
   color: #0F172A;
-  border-radius: 12px;
+  border-radius: 14px;
   width: 100%;
-  padding: 12px 16px;
+  padding: 16px 18px;
   border: 2px dashed #94A3B8;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   text-align: left;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
-.ticket-header {
+.ticket-header-row {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 0.75rem;
   font-weight: 700;
   color: var(--accent-rust);
   border-bottom: 1px solid #CBD5E1;
-  padding-bottom: 4px;
+  padding-bottom: 6px;
 }
 
-.ticket-body {
+.pass-tag {
+  color: var(--accent-amber);
+  background: #0B132B;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.65rem;
+}
+
+.ticket-couples {
+  font-size: 2.2rem;
+  color: #0B132B;
+  text-align: center;
+  line-height: 1.1;
+  margin: 2px 0;
+}
+
+.ticket-details {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
-.ticket-row {
+.ticket-field {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 2px;
   font-size: 0.8rem;
 }
 
-.ticket-label {
+.field-label {
   color: #64748B;
+  font-size: 0.7rem;
 }
 
-.ticket-val {
+.field-value {
   font-weight: 700;
   color: #0F172A;
 }
 
-.celebration-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
+.finale-footer {
+  margin-top: 0.5rem;
+}
+
+.replay-link {
+  font-size: 1.6rem;
+  opacity: 0.85;
 }
 
 /* ==========================================================================

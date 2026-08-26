@@ -1,6 +1,6 @@
 /**
  * LATE NIGHT TAPE REEL - ROMANTIC PROPOSAL SPA CONTROLLER
- * Multi-Scene Engine & Scene 5 Enhanced Proposal Dodge Architecture
+ * Full Multi-Scene Architecture & Scene 6 Finale Canvas Engine
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -35,28 +35,40 @@ document.addEventListener('DOMContentLoaded', () => {
   startHudClock();
 
   // ==========================================================================
-  // AUDIO CONTROLLER
+  // AUDIO CONTROLLER WITH BROWSER AUTOPLAY FALLBACK
   // ==========================================================================
   function toggleAudio(forcePlay = null) {
     const shouldPlay = forcePlay !== null ? forcePlay : bgMusic.paused;
+    const celebrationAudioText = document.getElementById('celebrationAudioText');
 
     if (shouldPlay) {
       bgMusic.play().then(() => {
         audioPlaying = true;
         soundToggleBtn.classList.add('playing');
         soundToggleBtn.querySelector('.sound-text').textContent = 'Sound: ON';
+        if (celebrationAudioText) celebrationAudioText.textContent = "Music Playing... 🎵";
       }).catch(err => {
-        console.log('Audio playback waiting for user action:', err);
+        console.log('Audio autoplay policy fallback active:', err);
+        audioPlaying = false;
+        soundToggleBtn.classList.remove('playing');
+        soundToggleBtn.querySelector('.sound-text').textContent = 'Sound: OFF';
+        if (celebrationAudioText) celebrationAudioText.textContent = "🔇 Tap for Sound";
       });
     } else {
       bgMusic.pause();
       audioPlaying = false;
       soundToggleBtn.classList.remove('playing');
       soundToggleBtn.querySelector('.sound-text').textContent = 'Sound: OFF';
+      if (celebrationAudioText) celebrationAudioText.textContent = "🔇 Tap for Sound";
     }
   }
 
   soundToggleBtn.addEventListener('click', () => toggleAudio());
+
+  const celebrationAudioControl = document.getElementById('celebrationAudioControl');
+  if (celebrationAudioControl) {
+    celebrationAudioControl.addEventListener('click', () => toggleAudio(true));
+  }
 
   // ==========================================================================
   // SCENE NAVIGATION SYSTEM WITH LIGHT LEAK TRANSITION
@@ -436,7 +448,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const maxDodges = 6;
   let yesScale = 1;
 
-  // Handwritten voice reaction captions
   const stickyMessages = [
     "Wait, misclick? Let me help you out... 🙈",
     "Are you sure? Think about our late-night boba runs! 🧋",
@@ -455,7 +466,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     dodgeCount++;
 
-    // Check if max dodges reached -> Surrender defeat!
     if (dodgeCount >= maxDodges) {
       surrenderNoButton();
       return;
@@ -467,31 +477,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const maxX = Math.max(20, stageRect.width - noRect.width - 20);
     const maxY = Math.max(20, stageRect.height - noRect.height - 20);
 
-    // Escape Pattern Variation Logic
     const pattern = dodgeCount % 5;
     let newX = 0;
     let newY = 0;
 
     if (pattern === 0) {
-      // Standard random leap across stage
       newX = Math.floor(Math.random() * maxX);
       newY = Math.floor(Math.random() * maxY);
     } else if (pattern === 1) {
-      // Fake-move toward center, then dart away
       newX = Math.floor(maxX * 0.85);
       newY = Math.floor(maxY * 0.15);
       noBtn.style.transform = 'scale(1.15) rotate(15deg)';
       setTimeout(() => { noBtn.style.transform = 'scale(1) rotate(0deg)'; }, 200);
     } else if (pattern === 2) {
-      // Hide near top-right corner behind preview
       newX = Math.floor(maxX * 0.9);
       newY = -30;
     } else if (pattern === 3) {
-      // Orbit around YES button to top left
       newX = 15;
       newY = 15;
     } else {
-      // Shrink and retreat to bottom center
       newX = Math.floor(maxX * 0.5);
       newY = Math.floor(maxY * 0.9);
       noBtn.style.transform = 'scale(0.8) rotate(-10deg)';
@@ -501,12 +505,10 @@ document.addEventListener('DOMContentLoaded', () => {
     noBtn.style.left = `${newX}px`;
     noBtn.style.top = `${newY}px`;
 
-    // Confident YES Button Expansion
     yesScale += 0.14;
     yesBtn.style.transform = `scale(${yesScale})`;
     yesBtn.classList.add('yes-super-confident');
 
-    // Spawn witty handwritten reaction note
     spawnStickyNote(stickyMessages[(dodgeCount - 1) % stickyMessages.length]);
   }
 
@@ -516,7 +518,6 @@ document.addEventListener('DOMContentLoaded', () => {
     noBtn.textContent = "Surrendered! 🏳️";
     spawnStickyNote("The 'No' button has officially retired! Only YES remains. ❤️");
 
-    // Maximize YES button confidence!
     yesBtn.style.transform = `scale(${yesScale + 0.2})`;
   }
 
@@ -555,14 +556,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // SCENE 6: CELEBRATION & CONFETTI CANVAS ENGINE
+  // SCENE 6: CELEBRATION (THEMED PARTICLE ENGINE & EMOTIONAL CLIMAX)
   // ==========================================================================
   const confettiCanvas = document.getElementById('confettiCanvas');
-  const ctx = confettiCanvas.getContext('2d');
+  const ctx = confettiCanvas ? confettiCanvas.getContext('2d') : null;
   let confettiParticles = [];
   let confettiAnimId = null;
 
   function resizeCanvas() {
+    if (!confettiCanvas) return;
     confettiCanvas.width = window.innerWidth;
     confettiCanvas.height = window.innerHeight;
   }
@@ -571,31 +573,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function initCelebrationScene() {
     toggleAudio(true);
-    createConfetti();
-    animateConfetti();
+    createThemedParticles();
+    animateThemedParticles();
   }
 
-  function createConfetti() {
+  function createThemedParticles() {
     confettiParticles = [];
     const colors = ['#FFB703', '#F4A261', '#10B981', '#E0E1DD', '#F43F5E'];
-    const particleCount = 90;
+    const particleCount = 80;
 
     for (let i = 0; i < particleCount; i++) {
       confettiParticles.push({
         x: Math.random() * confettiCanvas.width,
         y: Math.random() * confettiCanvas.height - confettiCanvas.height,
-        size: Math.random() * 8 + 4,
+        size: Math.random() * 12 + 6,
         color: colors[Math.floor(Math.random() * colors.length)],
-        speedY: Math.random() * 3 + 2,
-        speedX: Math.random() * 2 - 1,
+        speedY: Math.random() * 2.5 + 1.2,
+        speedX: Math.random() * 1.8 - 0.9,
         rotation: Math.random() * 360,
-        rotSpeed: Math.random() * 4 - 2,
-        isHeart: Math.random() > 0.6
+        rotSpeed: Math.random() * 3 - 1.5,
+        type: Math.random() > 0.6 ? 'heart' : (Math.random() > 0.5 ? 'star' : 'sparkle')
       });
     }
   }
 
-  function animateConfetti() {
+  function animateThemedParticles() {
+    if (!ctx || !confettiCanvas) return;
     ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
 
     confettiParticles.forEach(p => {
@@ -604,7 +607,7 @@ document.addEventListener('DOMContentLoaded', () => {
       p.rotation += p.rotSpeed;
 
       if (p.y > confettiCanvas.height) {
-        p.y = -10;
+        p.y = -15;
         p.x = Math.random() * confettiCanvas.width;
       }
 
@@ -613,34 +616,30 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.rotate((p.rotation * Math.PI) / 180);
       ctx.fillStyle = p.color;
 
-      if (p.isHeart) {
+      if (p.type === 'heart') {
         ctx.beginPath();
         ctx.arc(-p.size / 2, 0, p.size / 2, 0, Math.PI, true);
         ctx.arc(p.size / 2, 0, p.size / 2, 0, Math.PI, true);
         ctx.lineTo(0, p.size);
         ctx.closePath();
         ctx.fill();
+      } else if (p.type === 'star') {
+        ctx.font = `${Math.floor(p.size)}px sans-serif`;
+        ctx.fillText('✦', 0, 0);
       } else {
-        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 1.5);
+        ctx.font = `${Math.floor(p.size)}px sans-serif`;
+        ctx.fillText('✨', 0, 0);
       }
 
       ctx.restore();
     });
 
     if (currentScene === 6) {
-      confettiAnimId = requestAnimationFrame(animateConfetti);
+      confettiAnimId = requestAnimationFrame(animateThemedParticles);
     }
   }
 
-  const addToCalBtn = document.getElementById('addToCalBtn');
   const replayBtn = document.getElementById('replayBtn');
-
-  if (addToCalBtn) {
-    addToCalBtn.addEventListener('click', () => {
-      alert("✨ Date ticket saved! Check your calendar for our special night out! ❤️");
-    });
-  }
-
   if (replayBtn) {
     replayBtn.addEventListener('click', () => {
       if (confettiAnimId) cancelAnimationFrame(confettiAnimId);
