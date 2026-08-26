@@ -1,6 +1,6 @@
 /**
  * LATE NIGHT TAPE REEL - ROMANTIC PROPOSAL SPA CONTROLLER
- * Scene 2 Isolation & Multi-Scene Physics Engine
+ * Scene 3 Isolation & Multi-Scene Engine
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // SCENE 2: MEMORY LANE (PHYSICS-BASED POLAROID SWIPE ENGINE)
+  // SCENE 2: MEMORY LANE (PHYSICS POLAROID SWIPE ENGINE)
   // ==========================================================================
   let currentPolaroidIndex = 0;
   const polaroids = document.querySelectorAll('.polaroid-card');
@@ -158,7 +158,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const carouselDotsContainer = document.getElementById('carouselDots');
   const toQuestionsBtn = document.getElementById('toQuestionsBtn');
 
-  // Build diegetic indicator dots
   if (carouselDotsContainer) {
     carouselDotsContainer.innerHTML = '';
     polaroids.forEach((_, idx) => {
@@ -193,13 +192,11 @@ document.addEventListener('DOMContentLoaded', () => {
       dot.classList.toggle('active', idx === currentPolaroidIndex);
     });
 
-    // If visitor reaches the final memory card (card 10, tkthao.gif), reveal soft transition trigger
     if (currentPolaroidIndex === polaroids.length - 1 && toQuestionsBtn) {
       toQuestionsBtn.classList.add('show-trigger');
     }
   }
 
-  // Pointer & Physics Drag Implementation
   let isDragging = false;
   let startX = 0;
   let dragDeltaX = 0;
@@ -219,7 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const baseOffset = -currentPolaroidIndex * carouselStage.offsetWidth;
       carouselTrack.style.transform = `translateX(${baseOffset + dragDeltaX}px)`;
 
-      // Apply rotation physics to current active card
       const activeCard = polaroids[currentPolaroidIndex];
       if (activeCard) {
         const rotAngle = Math.max(-12, Math.min(12, dragDeltaX * 0.06));
@@ -240,49 +236,37 @@ document.addEventListener('DOMContentLoaded', () => {
         setPolaroidIndex(currentPolaroidIndex);
       }
     });
-
-    window.addEventListener('pointercancel', () => {
-      if (isDragging) {
-        isDragging = false;
-        setPolaroidIndex(currentPolaroidIndex);
-      }
-    });
   }
 
   if (toQuestionsBtn) {
     toQuestionsBtn.addEventListener('click', () => goToScene(3));
   }
 
-  // Keyboard left/right arrow listener
-  document.addEventListener('keydown', e => {
-    if (currentScene === 2) {
-      if (e.key === 'ArrowRight') setPolaroidIndex(currentPolaroidIndex + 1);
-      if (e.key === 'ArrowLeft') setPolaroidIndex(currentPolaroidIndex - 1);
-    }
-  });
-
   // ==========================================================================
-  // SCENE 3: THE QUESTIONS
+  // SCENE 3: THE QUESTIONS & MEMORY NOTEBOOK VAULT
   // ==========================================================================
   let currentQuestionIndex = 0;
+  let savedAnswersCount = 0;
   const questionCards = document.querySelectorAll('.question-card');
   const qProgressText = document.getElementById('qProgressText');
+  const savedCountText = document.getElementById('savedCountText');
+  const memoryNotebookWidget = document.querySelector('.memory-notebook-widget');
 
-  questionCards.forEach(card => {
-    const options = card.querySelectorAll('.option-btn');
-    options.forEach(btn => {
-      btn.addEventListener('click', () => {
-        options.forEach(o => o.classList.remove('selected-answer'));
-        btn.classList.add('selected-answer');
+  function saveAnswerToVault() {
+    savedAnswersCount++;
+    savedCountText.textContent = `Saved: ${savedAnswersCount}/4`;
 
-        setTimeout(() => {
-          advanceQuestion();
-        }, 400);
-      });
-    });
-  });
+    // Trigger visual vault save effect on widget
+    if (memoryNotebookWidget) {
+      memoryNotebookWidget.classList.remove('vault-saved');
+      void memoryNotebookWidget.offsetWidth;
+      memoryNotebookWidget.classList.add('vault-saved');
+    }
+  }
 
-  function advanceQuestion() {
+  function advanceQuestionCard() {
+    saveAnswerToVault();
+
     if (currentQuestionIndex < questionCards.length - 1) {
       const activeCard = questionCards[currentQuestionIndex];
       activeCard.classList.add('exiting');
@@ -294,8 +278,126 @@ document.addEventListener('DOMContentLoaded', () => {
 
       qProgressText.textContent = `Question ${currentQuestionIndex + 1} of ${questionCards.length}`;
     } else {
-      goToScene(4);
+      // All 4 questions answered -> Proceed to Scene 4 (Build-Up)
+      setTimeout(() => {
+        goToScene(4);
+      }, 500);
     }
+  }
+
+  // Question 1: Short Text Input
+  const q1Input = document.getElementById('q1Input');
+  const q1SubmitBtn = document.getElementById('q1SubmitBtn');
+
+  function submitQ1() {
+    const val = q1Input ? q1Input.value.trim() : '';
+    if (!val) {
+      q1Input.focus();
+      q1Input.placeholder = "Please type a quick memory... ✨";
+      return;
+    }
+    advanceQuestionCard();
+  }
+
+  if (q1SubmitBtn) q1SubmitBtn.addEventListener('click', submitQ1);
+  if (q1Input) {
+    q1Input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') submitQ1();
+    });
+  }
+
+  // Question 2: Multiple Choice Options
+  const q2Options = document.querySelectorAll('[data-q2-option]');
+  q2Options.forEach(btn => {
+    btn.addEventListener('click', () => {
+      q2Options.forEach(o => o.classList.remove('selected-answer'));
+      btn.classList.add('selected-answer');
+
+      setTimeout(() => {
+        advanceQuestionCard();
+      }, 400);
+    });
+  });
+
+  // Question 3: Heart-Shaped Gauge Dial Slider
+  const heartGaugeStage = document.getElementById('heartGaugeStage');
+  const gaugeHeartHandle = document.getElementById('gaugeHeartHandle');
+  const gaugeArcFill = document.getElementById('gaugeArcFill');
+  const gaugeStatusText = document.getElementById('gaugeStatusText');
+  const q3SubmitBtn = document.getElementById('q3SubmitBtn');
+
+  let gaugeValue = 0.85; // Default 85%
+
+  function updateHeartGauge(percent) {
+    gaugeValue = Math.max(0, Math.min(1, percent));
+    const handleLeft = Math.max(5, Math.min(95, gaugeValue * 100));
+
+    if (gaugeHeartHandle) gaugeHeartHandle.style.left = `${handleLeft}%`;
+    if (gaugeArcFill) gaugeArcFill.style.width = `${gaugeValue * 100}%`;
+
+    if (gaugeStatusText) {
+      if (gaugeValue < 0.25) {
+        gaugeStatusText.textContent = "Rating: Meh 🥱";
+      } else if (gaugeValue < 0.5) {
+        gaugeStatusText.textContent = "Rating: A little bit 🤏";
+      } else if (gaugeValue < 0.75) {
+        gaugeStatusText.textContent = "Rating: Quite a lot 💓";
+      } else {
+        gaugeStatusText.textContent = "Rating: 100% Unbearable! 🥺❤️";
+      }
+    }
+  }
+
+  let isGaugeDragging = false;
+
+  if (heartGaugeStage) {
+    heartGaugeStage.addEventListener('pointerdown', (e) => {
+      isGaugeDragging = true;
+      handleGaugeMove(e);
+    });
+
+    window.addEventListener('pointermove', (e) => {
+      if (isGaugeDragging) handleGaugeMove(e);
+    });
+
+    window.addEventListener('pointerup', () => {
+      isGaugeDragging = false;
+    });
+  }
+
+  function handleGaugeMove(e) {
+    if (!heartGaugeStage) return;
+    const rect = heartGaugeStage.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const percent = clickX / rect.width;
+    updateHeartGauge(percent);
+  }
+
+  if (q3SubmitBtn) {
+    q3SubmitBtn.addEventListener('click', () => {
+      advanceQuestionCard();
+    });
+  }
+
+  // Question 4: Short Text Input
+  const q4Input = document.getElementById('q4Input');
+  const q4SubmitBtn = document.getElementById('q4SubmitBtn');
+
+  function submitQ4() {
+    const val = q4Input ? q4Input.value.trim() : '';
+    if (!val) {
+      q4Input.focus();
+      q4Input.placeholder = "Type your dream spot... ✨";
+      return;
+    }
+    advanceQuestionCard();
+  }
+
+  if (q4SubmitBtn) q4SubmitBtn.addEventListener('click', submitQ4);
+  if (q4Input) {
+    q4Input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') submitQ4();
+    });
   }
 
   // ==========================================================================
@@ -508,6 +610,8 @@ document.addEventListener('DOMContentLoaded', () => {
     replayBtn.addEventListener('click', () => {
       if (confettiAnimId) cancelAnimationFrame(confettiAnimId);
       currentQuestionIndex = 0;
+      savedAnswersCount = 0;
+      if (savedCountText) savedCountText.textContent = 'Saved: 0/4';
       yesScale = 1;
       if (yesBtn) yesBtn.style.transform = 'scale(1)';
       if (noBtn) {

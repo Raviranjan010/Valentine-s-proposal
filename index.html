@@ -107,7 +107,7 @@
               <div class="wax-crack-particle p3"></div>
             </div>
 
-            <!-- Letter Inside (Revealed when Wax Seal Cracks) -->
+            <!-- Letter Inside -->
             <div class="letter-reveal-content" id="letterRevealContent">
               <p class="handwritten-note font-handwritten">
                 "I put together something small for you... a memory tape of our favorite late-night moments."
@@ -141,7 +141,6 @@
 
         <!-- Polaroid Carousel Stage -->
         <div class="carousel-stage" id="carouselStage">
-
           <div class="carousel-viewport" id="carouselViewport">
             <div class="carousel-track" id="carouselTrack">
               
@@ -239,7 +238,7 @@
               <div class="polaroid-card" data-index="6">
                 <div class="tape-strip top-left"></div>
                 <div class="polaroid-photo-wrapper">
-                  <img src="assets/image9.gif" alt="Memory 7" class="polaroid-img" loading="lazy">
+                  <img src="assets/image9.gif" alt="Memory 9" class="polaroid-img" loading="lazy">
                 </div>
                 <div class="polaroid-meta">
                   <span class="meta-tag font-mono">📍 Inside Jokes</span>
@@ -299,11 +298,9 @@
           </div>
         </div>
 
-        <!-- Footer Controls & Transition Trigger -->
         <div class="scene-footer">
           <div class="carousel-indicators" id="carouselDots"></div>
           
-          <!-- Soft Diegetic Transition Trigger into Questions -->
           <button class="diegetic-continue-link font-handwritten memory-transition-trigger" id="toQuestionsBtn">
             ready for a few questions? ➔
           </button>
@@ -314,63 +311,94 @@
     <!-- ==================== SCENE 3: THE QUESTIONS ==================== -->
     <section class="scene-section" id="scene-3" data-scene-id="3">
       <div class="scene-content questions-container">
-        <div class="scene-header">
-          <span class="section-tag font-handwritten">Chapter II</span>
-          <h2 class="scene-title">A Few Quick Questions</h2>
-          <div class="question-progress font-mono" id="qProgressText">Question 1 of 4</div>
+        
+        <!-- Header & Pinned Memory Journal Widget -->
+        <div class="scene-header questions-header-flex">
+          <div>
+            <span class="section-tag font-handwritten">Chapter II</span>
+            <h2 class="scene-title">The Questions</h2>
+          </div>
+
+          <!-- Memory Notebook Answer Vault Widget -->
+          <div class="memory-notebook-widget" title="Your saved answers">
+            <span class="notebook-icon">📓</span>
+            <span class="notebook-count font-mono" id="savedCountText">Saved: 0/4</span>
+          </div>
         </div>
 
+        <div class="question-progress font-mono" id="qProgressText">Question 1 of 4</div>
+
+        <!-- Question Cards Wrapper -->
         <div class="question-cards-wrapper">
-          <!-- Question 1 -->
+
+          <!-- Question 1: Short Text Input -->
           <div class="question-card active" data-question-index="0">
             <div class="tape-strip center"></div>
             <h3 class="question-prompt font-handwritten">
-              "Out of all our late-night talks and random moments... what's your favorite kind of memory with us?"
+              "First time we met — do you remember what you were wearing?"
             </h3>
-            <div class="options-grid">
-              <button class="option-btn" data-answer="1">The 2 AM deep conversations 🌙</button>
-              <button class="option-btn" data-answer="2">The spontaneous silly adventures 🚀</button>
-              <button class="option-btn" data-answer="3">Just sitting in cozy quiet together ☕</button>
+            
+            <div class="input-answer-group">
+              <input type="text" id="q1Input" class="handwritten-input" placeholder="Type your memory here..." autocomplete="off">
+              <button class="save-answer-btn font-handwritten" id="q1SubmitBtn">
+                save to notebook ➔
+              </button>
             </div>
           </div>
 
-          <!-- Question 2 -->
+          <!-- Question 2: Multiple Choice Selection -->
           <div class="question-card" data-question-index="1">
             <div class="tape-strip center"></div>
             <h3 class="question-prompt font-handwritten">
-              "If we had an entire free evening with zero plans and all the time in the world... where are we heading?"
+              "Which of these describes our worst/best date so far?"
             </h3>
+            
             <div class="options-grid">
-              <button class="option-btn" data-answer="1">Stargazing with warm drinks ✨</button>
-              <button class="option-btn" data-answer="2">Trying that food spot we bookmarked 🍜</button>
-              <button class="option-btn" data-answer="3">Wandering the city until late 🏙️</button>
+              <button class="option-btn" data-q2-option="1">That spontaneous late-night food run 🍜</button>
+              <button class="option-btn" data-q2-option="2">Getting completely lost under the night sky ✨</button>
+              <button class="option-btn" data-q2-option="3">Every single date... even when plans went wrong 🙈</button>
             </div>
           </div>
 
-          <!-- Question 3 -->
+          <!-- Question 3: Heart-Shaped Gauge Dial Slider -->
           <div class="question-card" data-question-index="2">
             <div class="tape-strip center"></div>
             <h3 class="question-prompt font-handwritten">
-              "Be honest: How much do you smile when my name pops up on your phone screen?"
+              "On a scale of 'meh' to 'unbearable', how much do you miss me when I'm not around?"
             </h3>
-            <div class="options-grid">
-              <button class="option-btn" data-answer="1">11 out of 10 minimum 😊</button>
-              <button class="option-btn" data-answer="2">Off the charts entirely 📈</button>
-              <button class="option-btn" data-answer="3">I try to play it cool... but 100% 🙈</button>
+            
+            <div class="heart-gauge-wrapper">
+              <div class="heart-gauge-dial" id="heartGaugeStage">
+                <div class="gauge-arc-track"></div>
+                <div class="gauge-arc-fill" id="gaugeArcFill"></div>
+                <div class="gauge-heart-handle" id="gaugeHeartHandle">❤️</div>
+              </div>
+              
+              <div class="gauge-status-badge font-mono" id="gaugeStatusText">
+                Rating: 100% Unbearable! 🥺❤️
+              </div>
+              
+              <button class="save-answer-btn font-handwritten" id="q3SubmitBtn">
+                save rating ➔
+              </button>
             </div>
           </div>
 
-          <!-- Question 4 -->
+          <!-- Question 4: Short Text Input -->
           <div class="question-card" data-question-index="3">
             <div class="tape-strip center"></div>
             <h3 class="question-prompt font-handwritten">
-              "Are you ready for the actual question now?"
+              "If we could teleport anywhere right now, where would it be?"
             </h3>
-            <div class="options-grid">
-              <button class="option-btn highlight-option" data-answer="1">Show me. My heart is ready. ❤️</button>
-              <button class="option-btn highlight-option" data-answer="2">I've been waiting for this... ✨</button>
+            
+            <div class="input-answer-group">
+              <input type="text" id="q4Input" class="handwritten-input" placeholder="Our dream spot..." autocomplete="off">
+              <button class="save-answer-btn font-handwritten" id="q4SubmitBtn">
+                lock in answer ✨
+              </button>
             </div>
           </div>
+
         </div>
       </div>
     </section>
@@ -416,7 +444,6 @@
           <h2 class="ask-heading font-handwritten">Will you go out with me?</h2>
           <p class="ask-subtext">On a real, special date—just the two of us.</p>
 
-          <!-- Action Buttons Area -->
           <div class="ask-buttons-stage" id="askButtonsStage">
             <button class="yes-btn" id="yesBtn">
               <span class="yes-glow"></span>
@@ -428,7 +455,6 @@
             </button>
           </div>
 
-          <!-- Container for dynamic sticky notes spawned by dodging "No" -->
           <div class="sticky-notes-container" id="stickyNotesContainer" aria-live="polite"></div>
         </div>
       </div>
@@ -447,7 +473,6 @@
           <h2 class="celebration-title font-handwritten">YAYYY! 🎉❤️</h2>
           <p class="celebration-subtitle">I knew you'd say yes! You just made my entire world smile.</p>
 
-          <!-- Showcase GIF grid -->
           <div class="celebration-gifs-grid">
             <div class="gif-frame">
               <img src="assets/proposal.gif" alt="Celebration GIF 1" class="celebration-gif">
@@ -457,7 +482,6 @@
             </div>
           </div>
 
-          <!-- Date Confirmation Ticket Stub -->
           <div class="ticket-stub font-mono">
             <div class="ticket-header">
               <span>SPECIAL DATE PASS</span>
